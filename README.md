@@ -1,24 +1,25 @@
-# energy-n14-e13-standalone-back-check
+<!--
+ * @Author      : Mr.bin
+ * @Date        : 2022-07-27 10:39:27
+ * @LastEditTime: 2022-09-15 09:21:41
+ * @Description : energy-n14-e13-standalone-back-check
+-->
 
-## Project setup
-```
-npm install
-```
+# 全身等长肌力检测软件-单机版
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## 基本设备信息
 
-### Compiles and minifies for production
-```
-npm run build
-```
+1. 传感器厂商一（就发一台）
+   左右 K 值：94.092
+   传感器量程：0~200kg
 
-### Lints and fixes files
-```
-npm run lint
-```
+2. 传感器厂商二（常用）
+   左右 K 值：82.243
+   传感器量程：0~200kg
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 更新日志
+
+- v2.0.0
+  1. 重构了界面样式与布局
+  2. 增加和修改一些功能
+  3. 增加语音功能
