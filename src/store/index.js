@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:06
- * @LastEditTime: 2022-09-15 10:52:34
+ * @LastEditTime: 2022-09-16 10:24:42
  * @Description : vuex
  */
 import Vue from 'vue'
@@ -77,6 +77,7 @@ export default new Vuex.Store({
     SET_ZEROSTANDARD(state, zeroStandard) {
       state.zeroStandard = zeroStandard
     },
+
     // 当前选择的用户及其信息
     CHANGE_CURRENTUSERINFO(state, currentUserInfo) {
       state.currentUserInfo = currentUserInfo
@@ -86,6 +87,7 @@ export default new Vuex.Store({
     CHANGE_SELECTRESULT(state, selectResult) {
       state.selectResult = selectResult
     },
+
     // 测试最终结果
     CHANGE_RESULTVALUE(state, resultValue) {
       state.resultValue = resultValue
@@ -105,6 +107,7 @@ export default new Vuex.Store({
         resolve()
       })
     },
+
     // 当前选择的用户及其信息
     changeCurrentUserInfo({ commit }, currentUserInfo) {
       return new Promise((resolve, reject) => {
@@ -120,6 +123,7 @@ export default new Vuex.Store({
         resolve()
       })
     },
+
     // 测试最终结果
     changeResultValue({ commit }, resultValue) {
       return new Promise((resolve, reject) => {
