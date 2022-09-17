@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-16 11:38:38
- * @LastEditTime: 2022-09-16 15:51:07
+ * @LastEditTime: 2022-09-17 11:35:05
  * @Description : 测试项目选择
 -->
 <template>
@@ -60,7 +60,7 @@
         ></el-checkbox>
       </el-checkbox-group>
 
-      <!-- 人体图 -->
+      <!-- 设备图 -->
       <div class="img-wrapper">
         <el-image class="img" :src="imgSrc" fit="scale-down"></el-image>
       </div>
@@ -93,6 +93,51 @@
           >
         </div>
       </div>
+
+      <!-- 身高、体重确认弹窗 -->
+      <el-dialog
+        class="dialog"
+        title="请确认身高、体重"
+        :visible.sync="centerDialogVisible"
+        width="30%"
+        top="30vh"
+        center
+      >
+        <div class="content">
+          <div class="item">
+            身高：<span :style="{ color: 'red' }">{{
+              this.$store.state.currentUserInfo.height
+            }}</span>
+            cm
+          </div>
+          <div class="item">
+            体重：<span :style="{ color: 'red' }">{{
+              this.$store.state.currentUserInfo.weight
+            }}</span>
+            kg
+          </div>
+        </div>
+        <span slot="footer">
+          <el-button
+            class="btn-item"
+            type="danger"
+            plain
+            round
+            icon="el-icon-circle-close"
+            @click="handleToUser"
+            >有误，前往修改</el-button
+          >
+          <el-button
+            class="btn-item"
+            type="primary"
+            plain
+            round
+            icon="el-icon-circle-check"
+            @click="handleToTest"
+            >无误，开始测试</el-button
+          >
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -105,13 +150,15 @@ export default {
     return {
       imgSrc: require('@/assets/img/Home/设备实物.png'),
 
+      centerDialogVisible: false, // 弹窗显隐
+
       selectGroup: [], // 选项数组
       tableData: [] // 展示窗数组
     }
   },
 
   created() {
-    // 初始化最终结果
+    // 初始化测试最终结果
     this.$store.dispatch('changeResultValue', {
       cvRearProtraction: 0, // 颈椎后伸，cervical-vertebra-rearProtraction
       cvAnteflexion: 0, // 颈椎前屈，cervical-vertebra-anteflexion
@@ -132,6 +179,10 @@ export default {
       llLeftInsideCollect: 0, // 下肢左内收，lower-limb-leftInsideCollect
       llRightInsideCollect: 0 // 下肢右内收，lower-limb-rightInsideCollect
     })
+    // 初始化测试项目选择
+    this.$store.dispatch('changeSelectResult', [])
+    // 初始化中文名项目选择结果
+    window.sessionStorage.setItem('chineseSelectResult', JSON.stringify([]))
   },
 
   methods: {
@@ -187,16 +238,19 @@ export default {
           }
         }
         // 测试项目选择结果，放到Vuex中
-        this.$store.dispatch('changeSelectResult', selectResult).then(() => {
-          this.$router.push({
-            path: '/' + this.$store.state.selectResult[0]
+        this.$store
+          .dispatch('changeSelectResult', selectResult)
+          .then(() => {
+            // 中文名项目选择结果，放到sessionStorage中，用于后面数据记录表的测试项目列
+            window.sessionStorage.setItem(
+              'chineseSelectResult',
+              JSON.stringify(this.tableData)
+            )
           })
-        })
-        // 中文名项目选择结果，放到sessionStorage中，用于后面数据记录表的测试项目列
-        window.sessionStorage.setItem(
-          'chineseSelectResult',
-          JSON.stringify(this.tableData)
-        )
+          .then(() => {
+            // 身高、体重弹窗确认
+            this.centerDialogVisible = true
+          })
       } else {
         this.$alert('测试项目不能为空，请选择测试项目！', '提示', {
           type: 'warning',
@@ -207,6 +261,26 @@ export default {
           callback: () => {}
         })
       }
+    },
+
+    /**
+     * @description: 有误，前往修改
+     */
+    handleToUser() {
+      this.centerDialogVisible = false
+      this.$router.push({
+        path: '/user'
+      })
+    },
+
+    /**
+     * @description: 无误，开始测试
+     */
+    handleToTest() {
+      this.centerDialogVisible = false
+      this.$router.push({
+        path: '/' + this.$store.state.selectResult[0]
+      })
     },
 
     /**
@@ -234,7 +308,6 @@ export default {
     background-color: #ffffff;
     box-shadow: 0 0 10px #929292;
     padding: 20px 40px;
-
     @include flex(row, space-between, stretch);
 
     /* 多项选择容器 */
@@ -246,7 +319,7 @@ export default {
       }
     }
 
-    /* 人体图 */
+    /* 设备图 */
     .img-wrapper {
       width: 24%;
       @include flex(row, center, center);
@@ -273,6 +346,19 @@ export default {
           font-size: 28px;
           margin: 0 30px;
         }
+      }
+    }
+
+    /* 确认弹窗相关 */
+    .dialog {
+      .content {
+        @include flex(column, center, center);
+        .item {
+          margin: 5px 0;
+        }
+      }
+      .btn-item {
+        margin: 0 10px;
       }
     }
   }
