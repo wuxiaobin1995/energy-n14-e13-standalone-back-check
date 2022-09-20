@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:27
- * @LastEditTime: 2022-09-15 09:21:41
+ * @LastEditTime: 2022-09-20 10:49:11
  * @Description : energy-n14-e13-standalone-back-check
 -->
 
@@ -23,3 +23,7 @@
   1. 重构了界面样式与布局
   2. 增加和修改一些功能
   3. 增加语音功能
+
+## 其他
+
+- 计算年龄：this.$moment().diff('1995-12-22', 'years')
