@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-16 11:38:38
- * @LastEditTime: 2022-09-17 11:35:05
+ * @LastEditTime: 2022-09-22 11:15:09
  * @Description : 测试项目选择
 -->
 <template>
@@ -312,7 +312,7 @@ export default {
 
     /* 多项选择容器 */
     .checkbox-wrapper {
-      width: 35%;
+      width: 30%;
       @include flex(column, stretch, stretch);
       .checkbox-reset {
         margin: 12px 0;
@@ -321,7 +321,7 @@ export default {
 
     /* 设备图 */
     .img-wrapper {
-      width: 24%;
+      width: 38%;
       @include flex(row, center, center);
       .img {
         width: 100%;
@@ -330,7 +330,7 @@ export default {
 
     /* 右半部 */
     .right-wrapper {
-      width: 35%;
+      width: 30%;
       @include flex(column, stretch, stretch);
       // 展示窗
       .show-wrapper {
