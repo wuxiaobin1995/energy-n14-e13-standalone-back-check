@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:06
- * @LastEditTime: 2022-09-16 11:38:24
+ * @LastEditTime: 2022-09-26 09:58:26
  * @Description : 路由
  */
 import Vue from 'vue'
@@ -99,6 +99,118 @@ const routes = [
         name: 'test-measure',
         component: () => import('@/views/test-mode/measure'),
         meta: ['测试具体测量']
+      },
+      // 测试项目介绍
+      {
+        path: 'cvRearProtraction',
+        name: 'cvRearProtraction',
+        component: () =>
+          import('@/views/test-mode/introduce/cvRearProtraction'),
+        meta: ['颈椎后伸']
+      },
+      {
+        path: 'cvAnteflexion',
+        name: 'cvAnteflexion',
+        component: () => import('@/views/test-mode/introduce/cvAnteflexion'),
+        meta: ['颈椎前屈']
+      },
+      {
+        path: 'cvRightSide',
+        name: 'cvRightSide',
+        component: () => import('@/views/test-mode/introduce/cvRightSide'),
+        meta: ['颈椎右侧屈']
+      },
+      {
+        path: 'cvLeftSide',
+        name: 'cvLeftSide',
+        component: () => import('@/views/test-mode/introduce/cvLeftSide'),
+        meta: ['颈椎左侧屈']
+      },
+      {
+        path: 'tRearProtraction',
+        name: 'tRearProtraction',
+        component: () => import('@/views/test-mode/introduce/tRearProtraction'),
+        meta: ['躯干后伸']
+      },
+      {
+        path: 'tAnteflexion',
+        name: 'tAnteflexion',
+        component: () => import('@/views/test-mode/introduce/tAnteflexion'),
+        meta: ['躯干前屈']
+      },
+      {
+        path: 'tLeftSide',
+        name: 'tLeftSide',
+        component: () => import('@/views/test-mode/introduce/tLeftSide'),
+        meta: ['躯干左侧屈']
+      },
+      {
+        path: 'tRightSide',
+        name: 'tRightSide',
+        component: () => import('@/views/test-mode/introduce/tRightSide'),
+        meta: ['躯干右侧屈']
+      },
+      {
+        path: 'ulPush',
+        name: 'ulPush',
+        component: () => import('@/views/test-mode/introduce/ulPush'),
+        meta: ['上肢推']
+      },
+      {
+        path: 'ulPull',
+        name: 'ulPull',
+        component: () => import('@/views/test-mode/introduce/ulPull'),
+        meta: ['上肢拉']
+      },
+      {
+        path: 'ulLeftAbducent',
+        name: 'ulLeftAbducent',
+        component: () => import('@/views/test-mode/introduce/ulLeftAbducent'),
+        meta: ['上肢左外展']
+      },
+      {
+        path: 'ulRightAbducent',
+        name: 'ulRightAbducent',
+        component: () => import('@/views/test-mode/introduce/ulRightAbducent'),
+        meta: ['上肢右外展']
+      },
+      {
+        path: 'llAfterLeftOut',
+        name: 'llAfterLeftOut',
+        component: () => import('@/views/test-mode/introduce/llAfterLeftOut'),
+        meta: ['下肢左后伸']
+      },
+      {
+        path: 'llAfterRightOut',
+        name: 'llAfterRightOut',
+        component: () => import('@/views/test-mode/introduce/llAfterRightOut'),
+        meta: ['下肢右后伸']
+      },
+      {
+        path: 'llLeftAbducent',
+        name: 'llLeftAbducent',
+        component: () => import('@/views/test-mode/introduce/llLeftAbducent'),
+        meta: ['下肢左外展']
+      },
+      {
+        path: 'llRightAbducent',
+        name: 'llRightAbducent',
+        component: () => import('@/views/test-mode/introduce/llRightAbducent'),
+        meta: ['下肢右外展']
+      },
+      {
+        path: 'llLeftInsideCollect',
+        name: 'llLeftInsideCollect',
+        component: () =>
+          import('@/views/test-mode/introduce/llLeftInsideCollect'),
+        meta: ['下肢左内收']
+      },
+      {
+        path: 'llRightInsideCollect',
+        name: 'llRightInsideCollect',
+        component: () =>
+          import('@/views/test-mode/introduce/llRightInsideCollect'),
+        meta: ['下肢右内收']
       }
     ]
   },

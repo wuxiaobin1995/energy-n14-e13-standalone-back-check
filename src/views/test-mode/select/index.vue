@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-16 11:38:38
- * @LastEditTime: 2022-09-22 11:15:09
+ * @LastEditTime: 2022-09-26 11:33:36
  * @Description : 测试项目选择
 -->
 <template>
@@ -162,8 +162,8 @@ export default {
     this.$store.dispatch('changeResultValue', {
       cvRearProtraction: 0, // 颈椎后伸，cervical-vertebra-rearProtraction
       cvAnteflexion: 0, // 颈椎前屈，cervical-vertebra-anteflexion
-      cvLeftSide: 0, // 颈椎左侧屈，cervical-vertebra-leftSide
       cvRightSide: 0, // 颈椎右侧屈，cervical-vertebra-rightSi
+      cvLeftSide: 0, // 颈椎左侧屈，cervical-vertebra-leftSide
       tRearProtraction: 0, // 躯干后伸，trunk-rearProtraction
       tAnteflexion: 0, // 躯干前屈，trunk-anteflexion
       tLeftSide: 0, // 躯干左侧屈，trunk-leftSide
@@ -212,8 +212,8 @@ export default {
             selectResult.push('cvRearProtraction') // 颈椎后伸，cervical-vertebra-rearProtraction
             selectResult.push('cvAnteflexion') // 颈椎前屈，cervical-vertebra-anteflexion
           } else if (item === '颈椎：侧屈') {
-            selectResult.push('cvLeftSide') // 颈椎左侧屈，cervical-vertebra-leftSide
             selectResult.push('cvRightSide') // 颈椎右侧屈，cervical-vertebra-rightSide
+            selectResult.push('cvLeftSide') // 颈椎左侧屈，cervical-vertebra-leftSide
           } else if (item === '躯干：后伸/前屈') {
             selectResult.push('tRearProtraction') // 躯干后伸，trunk-rearProtraction
             selectResult.push('tAnteflexion') // 躯干前屈，trunk-anteflexion
