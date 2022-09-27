@@ -1,11 +1,14 @@
 <!--
  * @Author      : 吴晓斌
  * @Date        : 2021-05-30 12:07:39
- * @LastEditTime: 2022-09-26 16:14:34
+ * @LastEditTime: 2022-09-27 09:29:27
  * @Description : 颈椎后伸-介绍页
 -->
 <template>
   <div class="container">
+    <!-- 语音播放 -->
+    <audio ref="audio" controls="controls" hidden :src="audioSrc" />
+
     <div class="wrapper">
       <!-- 左半部 -->
       <div class="left">
@@ -44,19 +47,39 @@
 </template>
 
 <script>
+/* 路径模块 */
+import path from 'path'
+
 export default {
   name: 'cvRearProtraction',
 
+  data() {
+    return {
+      /* 语音相关 */
+      audioOpen: this.$store.state.voiceSwitch,
+      audioSrc: path.join(__static, `narrate/mandarin/2-颈椎后伸.mp3`)
+    }
+  },
+
+  mounted() {
+    if (this.audioOpen === true) {
+      setTimeout(() => {
+        this.$refs.audio.currentTime = 0
+        this.$refs.audio.play()
+      }, 500)
+    }
+  },
+
   methods: {
     /**
-     * @description: 开始测量按钮
+     * @description: 开始测试
      */
     handleTest() {
       this.$router.push({
         path: '/test-measure',
         query: {
-          testName: 'cvRearProtraction',
-          chineseName: '颈椎后伸'
+          testName: JSON.stringify('cvRearProtraction'),
+          chineseName: JSON.stringify('颈椎后伸')
         }
       })
     }

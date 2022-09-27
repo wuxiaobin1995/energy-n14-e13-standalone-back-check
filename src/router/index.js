@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:06
- * @LastEditTime: 2022-09-26 09:58:26
+ * @LastEditTime: 2022-09-27 17:21:31
  * @Description : 路由
  */
 import Vue from 'vue'
@@ -219,6 +219,11 @@ const routes = [
     path: '/refresh',
     name: 'refresh',
     component: () => import('@/views/refresh')
+  },
+  {
+    path: '/refresh-special',
+    name: 'refresh-special',
+    component: () => import('@/views/refresh-special')
   },
 
   {

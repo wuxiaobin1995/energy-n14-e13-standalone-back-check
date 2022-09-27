@@ -1,57 +1,86 @@
 <!--
  * @Author      : 吴晓斌
  * @Date        : 2021-05-30 12:07:39
- * @LastEditTime: 2022-09-26 10:11:47
+ * @LastEditTime: 2022-09-27 10:57:20
  * @Description : 躯干后伸-介绍页
 -->
 <template>
   <div class="container">
-    <!-- 左半部 -->
-    <div class="left-wrapper">
-      <img class="img" src="@/assets/img/Test/introduce/躯干后伸.png" />
-      <img class="img" src="@/assets/img/Test/introduce/图标说明.png" />
-    </div>
-    <!-- 右半部 -->
-    <div class="right-wrapper">
-      <!-- 介绍文本 -->
-      <div class="introduce">
-        <h2>躯干后伸</h2>
-        <p>
-          1、如图所示，受试者站在底板中央，腰背挺直，双脚自然分开，调整软垫高度：
-        </p>
-        <p>- P2与胸骨柄中段平齐，P4与髂前上棘平齐；</p>
-        <p>- P1与肩胛骨中段平齐、P3与4等高，P5与腘窝平齐；</p>
-        <p>
-          2、高度调整完毕之后，确认后方软垫横杆卡槽分别为8、9、13，使得受试者微屈膝，随后将P4向内推动、卡紧，防止出现代偿动作；
-        </p>
-        <p>3、向后轻压P1，确认可以正常发力即可。</p>
+    <!-- 语音播放 -->
+    <audio ref="audio" controls="controls" hidden :src="audioSrc" />
+
+    <div class="wrapper">
+      <!-- 左半部 -->
+      <div class="left">
+        <img class="img" src="@/assets/img/Test/introduce/躯干后伸.png" />
+        <img class="img" src="@/assets/img/Test/introduce/图标说明.png" />
       </div>
-      <!-- 按钮 -->
-      <div class="btn">
-        <el-button
-          type="primary"
-          icon="el-icon-caret-right"
-          class="yes"
-          @click="handleTest"
-          >开始测试</el-button
-        >
+
+      <!-- 右半部 -->
+      <div class="right">
+        <!-- 介绍文本 -->
+        <div class="introduce">
+          <h2 class="title">躯干后伸</h2>
+          <p>
+            1、如图所示，受试者站在底板中央，腰背挺直，双脚自然分开，调整软垫高度：
+          </p>
+          <p>- P2与胸骨柄中段平齐，P4与髂前上棘平齐；</p>
+          <p>- P1与肩胛骨中段平齐、P3与4等高，P5与腘窝平齐；</p>
+          <p>
+            2、高度调整完毕之后，确认后方软垫横杆卡槽分别为8、9、13，使得受试者微屈膝，随后将P4向内推动、卡紧，防止出现代偿动作；
+          </p>
+          <p>3、向后轻压P1，确认可以正常发力即可。</p>
+        </div>
+        <!-- 按钮 -->
+        <div class="btn">
+          <el-button
+            type="primary"
+            icon="el-icon-caret-right"
+            class="item"
+            @click="handleTest"
+            >开始测试</el-button
+          >
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+/* 路径模块 */
+import path from 'path'
+
 export default {
   name: 'tRearProtraction',
 
+  data() {
+    return {
+      /* 语音相关 */
+      audioOpen: this.$store.state.voiceSwitch,
+      audioSrc: path.join(__static, `narrate/mandarin/6-躯干后伸.mp3`)
+    }
+  },
+
+  mounted() {
+    if (this.audioOpen === true) {
+      setTimeout(() => {
+        this.$refs.audio.currentTime = 0
+        this.$refs.audio.play()
+      }, 500)
+    }
+  },
+
   methods: {
     /**
-     * @description: 开始测量按钮
+     * @description: 开始测试
      */
     handleTest() {
       this.$router.push({
         path: '/test-measure',
-        query: { testName: 'tRearProtraction', chineseName: '躯干后伸' }
+        query: {
+          testName: JSON.stringify('tRearProtraction'),
+          chineseName: JSON.stringify('躯干后伸')
+        }
       })
     }
   }
@@ -62,33 +91,39 @@ export default {
 .container {
   width: 100%;
   height: 100%;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @include flex(row, center, center);
 
-  .left-wrapper {
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    .img {
-      width: 60%;
+  .wrapper {
+    width: 86%;
+    height: 90%;
+    border-radius: 34px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px #929292;
+    padding: 20px 40px;
+    @include flex(row, stretch, stretch);
+
+    .left {
+      width: 45%;
+      @include flex(column, center, center);
+      .img {
+        width: 70%;
+      }
     }
-  }
-  .right-wrapper {
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .introduce {
-      font-size: 20px;
-    }
-    .btn {
-      margin-top: 40px;
-      .yes {
-        font-size: 26px;
+
+    .right {
+      width: 55%;
+      @include flex(column, center, center);
+      .introduce {
+        font-size: 20px;
+        .title {
+          font-size: 35px;
+        }
+      }
+      .btn {
+        margin-top: 40px;
+        .item {
+          font-size: 26px;
+        }
       }
     }
   }
