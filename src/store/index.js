@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:06
- * @LastEditTime: 2022-09-16 10:24:42
+ * @LastEditTime: 2022-10-09 14:50:40
  * @Description : vuex
  */
 import Vue from 'vue'
@@ -50,8 +50,8 @@ export default new Vuex.Store({
     resultValue: {
       cvRearProtraction: 0, // 颈椎后伸，cervical-vertebra-rearProtraction
       cvAnteflexion: 0, // 颈椎前屈，cervical-vertebra-anteflexion
-      cvLeftSide: 0, // 颈椎左侧屈，cervical-vertebra-leftSide
       cvRightSide: 0, // 颈椎右侧屈，cervical-vertebra-rightSi
+      cvLeftSide: 0, // 颈椎左侧屈，cervical-vertebra-leftSide
       tRearProtraction: 0, // 躯干后伸，trunk-rearProtraction
       tAnteflexion: 0, // 躯干前屈，trunk-anteflexion
       tLeftSide: 0, // 躯干左侧屈，trunk-leftSide

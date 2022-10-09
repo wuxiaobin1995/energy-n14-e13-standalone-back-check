@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-27 16:51:05
- * @LastEditTime: 2022-09-27 17:28:23
+ * @LastEditTime: 2022-10-09 15:09:48
  * @Description : 测试具体测量
 -->
 <template>
@@ -69,9 +69,7 @@
             icon="el-icon-check"
             :disabled="testValueArray.length === 3 ? false : true"
             @click="handleFinish"
-            >{{
-              testValueArray.length === 3 ? '查看报告' : 'Loading'
-            }}</el-button
+            >完 成</el-button
           >
         </div>
 
@@ -144,28 +142,50 @@ export default {
       xData: [], // 横坐标数组
 
       /* 其他 */
-      leftK: 0, // 左K
-      rightK: 0, // 右K
-      leftStandard: 0, // 左调零值
-      rightStandard: 0, // 右调零值
       timeClock: null, // 计时器
       time: 10, // 倒计时10秒
-      leftWeight: 0, // 左负重（kg），精确到0.1kg
-      rightWeight: 0, // 右负重（kg），精确到0.1kg
-      leftWeightArray: [], // 左负重数组
-      rightWeightArray: [], // 右负重数组
+      useP1: [
+        'cvRearProtraction',
+        'cvAnteflexion',
+        'cvRightSide',
+        'cvLeftSide',
+        'tRearProtraction',
+        'ulPush',
+        'ulPull'
+      ], // 使用P1的测试项目
+      useP2: [
+        'tAnteflexion',
+        'tLeftSide',
+        'tRightSide',
+        'ulLeftAbducent',
+        'ulRightAbducent',
+        'llAfterLeftOut',
+        'llAfterRightOut',
+        'llLeftAbducent',
+        'llRightAbducent',
+        'llLeftInsideCollect',
+        'llRightInsideCollect'
+      ], // 使用P2的测试项目
+      oneK: 0, // P1的K
+      twoK: 0, // P2的K
+      oneStandard: 0, // P1调零值
+      twoStandard: 0, // P2调零值
+      oneWeight: 0, // P1负重（kg），精确到0.01kg
+      twoWeight: 0, // P2负重（kg），精确到0.01kg
+      oneWeightArray: [], // P1负重数组
+      twoWeightArray: [], // P2负重数组
 
       /* 结果相关 */
       testValueArray: [], // 该项目测量值数组
-      testResult: null // 该项目最终测量结果（取三次的最大值），kg
+      testResult: 0 // 该项目最终测量结果（取三次的最大值），kg
     }
   },
 
   created() {
-    this.leftK = parseFloat(window.localStorage.getItem('leftK'))
-    this.rightK = parseFloat(window.localStorage.getItem('rightK'))
-    this.leftStandard = this.$store.state.zeroStandard.leftStandard
-    this.rightStandard = this.$store.state.zeroStandard.rightStandard
+    this.oneK = parseFloat(window.localStorage.getItem('oneK'))
+    this.twoK = parseFloat(window.localStorage.getItem('twoK'))
+    this.oneStandard = this.$store.state.zeroStandard.oneStandard
+    this.twoStandard = this.$store.state.zeroStandard.twoStandard
 
     this.initSerialPort()
   },
@@ -191,7 +211,7 @@ export default {
 
   methods: {
     /**
-     * @description: 回到
+     * @description: 回到项目选择页面
      */
     handleGoBack() {
       this.$router.push({
@@ -251,41 +271,41 @@ export default {
 
             this.parser = this.usbPort.pipe(new Readline({ delimiter: '\n' }))
             this.parser.on('data', data => {
-              // console.log(data) // {String} 00326740032826，前两位是限位开关量（0或1）
+              // console.log(data) // {String} 00326740032826
 
-              /* 计算左、右负重 */
-              this.leftWeight = parseFloat(
+              /* 计算P1、P2负重 */
+              this.oneWeight = parseFloat(
                 (
-                  (parseInt(data.slice(2, 7)) - this.leftStandard) /
-                  -this.leftK
+                  (parseInt(data.slice(2, 7)) - this.oneStandard) /
+                  -this.oneK
                 ).toFixed(1)
               )
-              this.rightWeight = parseFloat(
+              this.twoWeight = parseFloat(
                 (
-                  (parseInt(data.slice(9, 14)) - this.rightStandard) /
-                  -this.rightK
+                  (parseInt(data.slice(9, 14)) - this.twoStandard) /
+                  -this.twoK
                 ).toFixed(1)
               )
-              if (this.leftWeight < 0) {
-                this.leftWeight = 0
+              if (this.oneWeight < 0) {
+                this.oneWeight = 0
               }
-              if (this.rightWeight < 0) {
-                this.rightWeight = 0
+              if (this.twoWeight < 0) {
+                this.twoWeight = 0
               }
 
               /* 数据校验 */
-              if (!isNaN(this.leftWeight) && !isNaN(this.rightWeight)) {
+              if (!isNaN(this.oneWeight) && !isNaN(this.twoWeight)) {
                 /* 过滤掉突变值 */
-                if (this.leftWeight <= 500 && this.rightWeight <= 500) {
+                if (this.oneWeight <= 200 && this.twoWeight <= 200) {
                   /* 数据插入数组中 */
-                  this.leftWeightArray.push(this.leftWeight)
-                  this.rightWeightArray.push(this.rightWeight)
+                  this.oneWeightArray.push(this.oneWeight)
+                  this.twoWeightArray.push(this.twoWeight)
 
                   /* 实时渲染图形 */
-                  if (this.$store.state.currentUserInfo.affectedSide === '左') {
-                    this.option.series[0].data = this.leftWeightArray
-                  } else {
-                    this.option.series[0].data = this.rightWeightArray
+                  if (this.useP1.includes(this.testName)) {
+                    this.option.series[0].data = this.oneWeightArray
+                  } else if (this.useP2.includes(this.testName)) {
+                    this.option.series[0].data = this.twoWeightArray
                   }
                   this.myChart.setOption(this.option)
                 }
@@ -369,7 +389,7 @@ export default {
           type: 'value',
           name: '单位：kg',
           min: 0
-          // max: 500
+          // max: 200
         },
         tooltip: {
           trigger: 'axis',
@@ -416,8 +436,8 @@ export default {
      * @description: 开始测量按钮
      */
     handleStart() {
-      this.leftWeightArray = [0] // 此处保证第一个值是0，为了应付医院
-      this.rightWeightArray = [0] // 此处保证第一个值是0，为了应付医院
+      this.oneWeightArray = [0] // 此处保证第一个值是0，为了应付医院
+      this.twoWeightArray = [0] // 此处保证第一个值是0，为了应付医院
       this.time = 10
       this.isStart = true
       this.isRestart = false
@@ -450,12 +470,10 @@ export default {
           this.time = 10
 
           if (this.testValueArray.length <= 2) {
-            if (this.$store.state.currentUserInfo.affectedSide === '左') {
-              this.testValueArray.push(Math.max(...this.leftWeightArray))
-            } else if (
-              this.$store.state.currentUserInfo.affectedSide === '右'
-            ) {
-              this.testValueArray.push(Math.max(...this.rightWeightArray))
+            if (this.useP1.includes(this.testName)) {
+              this.testValueArray.push(Math.max(...this.oneWeightArray))
+            } else if (this.useP2.includes(this.testName)) {
+              this.testValueArray.push(Math.max(...this.twoWeightArray))
             }
           }
 
@@ -515,77 +533,95 @@ export default {
           .then(() => {})
           .catch(() => {})
       } else {
-        /* 保存数据 */
-        const pdfTime = this.$moment().format('YYYY-MM-DD HH:mm:ss')
-        const hospital = window.localStorage.getItem('hospital')
-        const db = initDB()
-        db.test_data
-          .add({
-            hospital: hospital,
-            userId: this.$store.state.currentUserInfo.userId,
-            userName: this.$store.state.currentUserInfo.userName,
-            sex: this.$store.state.currentUserInfo.sex,
-            affectedSide: this.$store.state.currentUserInfo.affectedSide,
-            height: this.$store.state.currentUserInfo.height,
-            weight: this.$store.state.currentUserInfo.weight,
-            birthday: this.$store.state.currentUserInfo.birthday,
-            pdfTime: pdfTime,
-            dataArray: this.testValueArray,
-            ultimateLoad: this.testResult, // 极限负重
-            testType: '精准负重测试'
-          })
-          .then(() => {
-            const db = initDB()
-            db.user
-              .update(this.$store.state.currentUserInfo.userId, {
-                ultimateLoad: this.testResult
-              })
-              .then(() => {
-                const oldCurrentUserInfo = JSON.parse(
-                  JSON.stringify(this.$store.state.currentUserInfo)
-                )
-                this.$store.dispatch('changeCurrentUserInfo', {
-                  userId: oldCurrentUserInfo.userId,
-                  userName: oldCurrentUserInfo.userName,
-                  sex: oldCurrentUserInfo.sex,
-                  affectedSide: oldCurrentUserInfo.affectedSide,
-                  height: oldCurrentUserInfo.height,
-                  weight: oldCurrentUserInfo.weight,
-                  birthday: oldCurrentUserInfo.birthday,
-                  remarks: oldCurrentUserInfo.remarks,
-                  lastLoginTime: oldCurrentUserInfo.lastLoginTime,
-                  ultimateLoad: this.testResult
-                })
-              })
-          })
-          .then(() => {
-            // 前往报告页面
-            this.$router.push({
-              path: '/precision-weight-print',
-              query: {
-                userId: JSON.stringify(
-                  this.$store.state.currentUserInfo.userId
-                ),
-                pdfTime: JSON.stringify(pdfTime),
-                routerName: JSON.stringify('/test-select/precision-weight-set')
+        let valueObj = JSON.parse(JSON.stringify(this.$store.state.resultValue))
+        valueObj[`${this.testName}`] = this.testResult
+        this.$store.dispatch('changeResultValue', valueObj).then(() => {
+          /* 测试项目选择结果，更新到Vuex中 */
+          let valueArr = JSON.parse(
+            JSON.stringify(this.$store.state.selectResult)
+          )
+          valueArr.shift() // 移除第一个元素
+          this.$store.dispatch('changeSelectResult', valueArr).then(() => {
+            /* 测试项目全部完成 */
+            if (this.$store.state.selectResult.length === 0) {
+              const pdfTime = this.$moment().format('YYYY-MM-DD HH:mm:ss')
+              const hospital = window.localStorage.getItem('hospital')
+              const chineseSelectResult = JSON.parse(
+                window.sessionStorage.getItem('chineseSelectResult')
+              )
+              // 只取字符串前面2位
+              let testTypeArray = []
+              for (let i = 0; i < chineseSelectResult.length; i++) {
+                const item = chineseSelectResult[i]
+                testTypeArray.push(item.name.substr(0, 2))
               }
-            })
-          })
-          .catch(() => {
-            this.$alert(
-              `请点击"返回上一页"按钮，然后重新测试！`,
-              '数据保存失败',
-              {
-                type: 'error',
-                showClose: false,
-                center: true,
-                confirmButtonText: '返回上一页',
-                callback: () => {
-                  this.handleGoBack()
+              // 数组去重
+              testTypeArray = testTypeArray.filter(
+                (item, index, testTypeArray) => {
+                  // 当前元素，在原始数组中的第一个索引===当前索引值，否则返回当前元素
+                  return testTypeArray.indexOf(item, 0) === index
+                }
+              )
+              // 组合成类似 躯干、颈椎、上肢 的字符串
+              let testType = ''
+              for (let i = 0; i < testTypeArray.length; i++) {
+                if (testTypeArray.length - i === 1) {
+                  testType = testType + testTypeArray[i]
+                } else {
+                  testType = testType + testTypeArray[i] + '、'
                 }
               }
-            )
+
+              // 保存数据到数据库
+              const db = initDB()
+              db.test_data
+                .add({
+                  hospital: hospital,
+                  userId: this.$store.state.currentUserInfo.userId,
+                  userName: this.$store.state.currentUserInfo.userName,
+                  sex: this.$store.state.currentUserInfo.sex,
+                  height: this.$store.state.currentUserInfo.height,
+                  weight: this.$store.state.currentUserInfo.weight,
+                  birthday: this.$store.state.currentUserInfo.birthday,
+                  pdfTime: pdfTime,
+                  resultValue: this.$store.state.resultValue,
+                  testType: testType // 数据记录表的测试项目列，字符串
+                })
+                .then(() => {
+                  // 查看报告
+                  this.$router.push({
+                    path: '/test-print',
+                    query: {
+                      userId: JSON.stringify(
+                        this.$store.state.currentUserInfo.userId
+                      ),
+                      pdfTime: JSON.stringify(pdfTime),
+                      routerName: JSON.stringify('/test-select')
+                    }
+                  })
+                })
+                .catch(() => {
+                  this.$alert(
+                    `请点击"返回项目选择页"按钮，然后重新测试！`,
+                    '数据保存失败',
+                    {
+                      type: 'error',
+                      showClose: false,
+                      center: true,
+                      confirmButtonText: '返回项目选择页',
+                      callback: () => {
+                        this.handleGoBack()
+                      }
+                    }
+                  )
+                })
+            } else {
+              this.$router.push({
+                path: '/' + this.$store.state.selectResult[0]
+              })
+            }
           })
+        })
       }
     },
 

@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:06
- * @LastEditTime: 2022-09-27 17:21:31
+ * @LastEditTime: 2022-10-09 16:52:30
  * @Description : 路由
  */
 import Vue from 'vue'
@@ -213,6 +213,19 @@ const routes = [
         meta: ['下肢右内收']
       }
     ]
+  },
+
+  // 测试报告
+  {
+    path: '/test-print',
+    name: 'test-print',
+    component: () => import('@/views/test-mode/print')
+  },
+  // 长期趋势测试报告
+  {
+    path: '/secular-trend-print',
+    name: 'secular-trend-print',
+    component: () => import('@/views/test-mode/secular-trend-print')
   },
 
   {
