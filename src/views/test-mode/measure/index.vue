@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-27 16:51:05
- * @LastEditTime: 2022-10-09 15:09:48
+ * @LastEditTime: 2022-10-11 11:44:09
  * @Description : 测试具体测量
 -->
 <template>
@@ -124,8 +124,8 @@ export default {
       testName: JSON.parse(this.$route.query.testName),
       chineseName: JSON.parse(this.$route.query.chineseName),
 
-      timeBgSrc: require('@/assets/img/Test/Measure/倒计时背景.png'), // 倒计时背景
-      testValueSrc: require('@/assets/img/Test/Measure/测量数值背景.png'), // 测量数值背景
+      timeBgSrc: require('@/assets/img/Test/measure/倒计时背景.png'), // 倒计时背景
+      testValueSrc: require('@/assets/img/Test/measure/测量数值背景.png'), // 测量数值背景
 
       /* 按钮禁用控制 */
       isStart: false,
@@ -546,6 +546,11 @@ export default {
             if (this.$store.state.selectResult.length === 0) {
               const pdfTime = this.$moment().format('YYYY-MM-DD HH:mm:ss')
               const hospital = window.localStorage.getItem('hospital')
+              const currentAge = this.$moment().diff(
+                this.$store.state.currentUserInfo.birthday,
+                'years'
+              )
+
               const chineseSelectResult = JSON.parse(
                 window.sessionStorage.getItem('chineseSelectResult')
               )
@@ -583,6 +588,7 @@ export default {
                   height: this.$store.state.currentUserInfo.height,
                   weight: this.$store.state.currentUserInfo.weight,
                   birthday: this.$store.state.currentUserInfo.birthday,
+                  currentAge: currentAge, // 完成该次测试时的岁数
                   pdfTime: pdfTime,
                   resultValue: this.$store.state.resultValue,
                   testType: testType // 数据记录表的测试项目列，字符串
