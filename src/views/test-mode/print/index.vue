@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-10-09 11:29:24
- * @LastEditTime: 2022-10-11 17:58:22
+ * @LastEditTime: 2022-10-13 14:31:03
  * @Description : 测试报告
 -->
 <template>
@@ -40,11 +40,11 @@
               ></el-image>
               <el-image
                 class="score-img"
-                :src="threeLevel"
+                :src="cvRearProtractionLevel"
                 fit="scale-down"
               ></el-image>
               <div class="val">
-                <div class="level-text">{{ '中' }}</div>
+                <div class="level-text">{{ cvRearProtractionEvaluate }}</div>
                 <div class="val-item">
                   测量值: {{ testData.resultValue.cvRearProtraction }}kg
                 </div>
@@ -54,7 +54,7 @@
               </div>
             </div>
             <div class="bottom">
-              <div>颈椎后伸得分: {{ 5.7 }}</div>
+              <div>颈椎后伸得分: {{ cvRearProtractionScore }}</div>
             </div>
           </div>
           <div class="item">
@@ -66,11 +66,11 @@
               ></el-image>
               <el-image
                 class="score-img"
-                :src="threeLevel"
+                :src="cvAnteflexionLevel"
                 fit="scale-down"
               ></el-image>
               <div class="val">
-                <div class="level-text">{{ '中' }}</div>
+                <div class="level-text">{{ cvAnteflexionEvaluate }}</div>
                 <div class="val-item">
                   测量值: {{ testData.resultValue.cvAnteflexion }}kg
                 </div>
@@ -80,18 +80,18 @@
               </div>
             </div>
             <div class="bottom">
-              <div>颈椎前屈得分: {{ 5.7 }}</div>
+              <div>颈椎前屈得分: {{ cvAnteflexionScore }}</div>
             </div>
           </div>
           <div class="item">
             <div class="top">
               <el-image
                 class="score-img"
-                :src="threeLevel"
+                :src="oneRateLevel"
                 fit="scale-down"
               ></el-image>
               <div class="val">
-                <div class="level-text">{{ '中' }}</div>
+                <div class="level-text">{{ oneRateEvaluate }}</div>
                 <div class="val-item">
                   测量比 {{ cvRearProtractionRate }}：{{ 100 }}
                 </div>
@@ -99,14 +99,14 @@
               </div>
             </div>
             <div class="bottom">
-              <div>肌力比得分: {{ 9.8 }}</div>
+              <div>肌力比得分: {{ oneRateScore }}</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 颈椎右侧屈、左侧屈 -->
+    <!-- 颈椎左侧屈、右侧屈 -->
 
     <!-- 躯干后伸、前屈 -->
 
@@ -166,8 +166,8 @@ export default {
       /* 人体图 */
       cvRearProtractionImg: require('@/assets/img/Test/body_maps/颈椎后伸.png'), // 颈椎后伸
       cvAnteflexionImg: require('@/assets/img/Test/body_maps/颈椎前屈.png'), // 颈椎前屈
-      cvRightSideImg: require('@/assets/img/Test/body_maps/颈椎右侧屈.png'), // 颈椎右侧屈
       cvLeftSideImg: require('@/assets/img/Test/body_maps/颈椎左侧屈.png'), // 颈椎左侧屈
+      cvRightSideImg: require('@/assets/img/Test/body_maps/颈椎右侧屈.png'), // 颈椎右侧屈
       tRearProtractionImg: require('@/assets/img/Test/body_maps/躯干后伸.png'), // 躯干后伸
       tAnteflexionImg: require('@/assets/img/Test/body_maps/躯干前屈.png'), // 躯干前屈
       tLeftSideImg: require('@/assets/img/Test/body_maps/躯干左侧屈.png'), // 躯干左侧屈
@@ -197,8 +197,8 @@ export default {
         resultValue: {
           cvRearProtraction: 0, // 颈椎后伸，cervical-vertebra-rearProtraction
           cvAnteflexion: 0, // 颈椎前屈，cervical-vertebra-anteflexion
-          cvRightSide: 0, // 颈椎右侧屈，cervical-vertebra-rightSi
           cvLeftSide: 0, // 颈椎左侧屈，cervical-vertebra-leftSide
+          cvRightSide: 0, // 颈椎右侧屈，cervical-vertebra-rightSi
           tRearProtraction: 0, // 躯干后伸，trunk-rearProtraction
           tAnteflexion: 0, // 躯干前屈，trunk-anteflexion
           tLeftSide: 0, // 躯干左侧屈，trunk-leftSide
@@ -219,8 +219,8 @@ export default {
       /* 推荐值 */
       cvRearProtractionRecommend: '', // 颈椎后伸推荐值
       cvAnteflexionRecommend: '', // 颈椎前屈推荐值
-      cvRightSideRecommend: '', // 颈椎右侧屈推荐值
       cvLeftSideRecommend: '', // 颈椎左侧屈推荐值
+      cvRightSideRecommend: '', // 颈椎右侧屈推荐值
       tRearProtractionRecommend: '', // 躯干后伸推荐值
       tAnteflexionRecommend: '', // 躯干前屈推荐值
       tLeftSideRecommend: '', // 躯干左侧屈推荐值
@@ -238,14 +238,115 @@ export default {
 
       /* 肌力比 */
       cvRearProtractionRate: '', // 颈椎后伸比率
-      cvRightSideRate: '', // 颈椎右侧屈比率
+      cvLeftSideRate: '', // 颈椎左侧屈比率
       tRearProtractionRate: '', // 躯干后伸比率
       tLeftSideRate: '', // 躯干左侧屈比率
       ulPushRate: '', // 上肢推比率
       ulLeftAbducentRate: '', // 上肢左外展比率
       llAfterLeftOutRate: '', // 下肢左后伸比率
       llLeftAbducentRate: '', // 下肢左外展比率
-      llLeftInsideCollectRate: '' // 下肢左内收比率
+      llLeftInsideCollectRate: '', // 下肢左内收比率
+
+      /* 得分 */
+      cvRearProtractionScore: '', // 颈椎后伸得分
+      cvAnteflexionScore: '', // 颈椎前屈得分
+      oneRateScore: '', // 颈椎：后伸/前屈肌力比得分
+
+      cvLeftSideScore: '', // 颈椎左侧屈得分
+      cvRightSideScore: '', // 颈椎右侧屈得分
+      twoRateScore: '', // 颈椎：侧屈肌力比得分
+
+      tRearProtractionScore: '', // 躯干后伸得分
+      tAnteflexionScore: '', // 躯干前屈得分
+      threeRateScore: '', // 躯干：后伸/前屈肌力比得分
+
+      tLeftSideScore: '', // 躯干左侧屈得分
+      tRightSideScore: '', // 躯干右侧屈得分
+      fourRateScore: '', // 躯干：侧屈肌力比得分
+
+      ulPushScore: '', // 上肢推得分
+      ulPullScore: '', // 上肢拉得分
+      fiveRateScore: '', // 上肢：推/拉肌力比得分
+
+      ulLeftAbducentScore: '', // 上肢左外展得分
+      ulRightAbducentScore: '', // 上肢右外展得分
+      sixRateScore: '', // 上肢：外展肌力比得分
+
+      llAfterLeftOutScore: '', // 下肢左后伸得分
+      llAfterRightOutScore: '', // 下肢右后伸得分
+      sevenRateScore: '', // 下肢：后伸肌力比得分
+
+      llLeftAbducentScore: '', // 下肢左外展得分
+      llRightAbducentScore: '', // 下肢右外展得分
+      eightRateScore: '', // 下肢：外展肌力比得分
+
+      llLeftInsideCollectScore: '', // 下肢左内收得分
+      llRightInsideCollectScore: '', // 下肢右内收得分
+      nineRateScore: '', // 下肢：内收肌力比得分
+
+      /* 等级评价 */
+      cvRearProtractionLevel: '', // 颈椎后伸等级图
+      cvAnteflexionLevel: '', // 颈椎前屈等级图
+      oneRateLevel: '', // 颈椎：后伸/前屈肌力比等级图
+      cvRearProtractionEvaluate: '', // 颈椎后伸评价
+      cvAnteflexionEvaluate: '', // 颈椎前屈评价
+      oneRateEvaluate: '', // 颈椎：后伸/前屈肌力比评价
+
+      cvLeftSideLevel: '', // 颈椎左侧屈等级图
+      cvRightSideLevel: '', // 颈椎右侧屈等级图
+      twoRateLevel: '', // 颈椎：侧屈肌力比等级图
+      cvLeftSideEvaluate: '', // 颈椎左侧屈评价
+      cvRightSideEvaluate: '', // 颈椎右侧屈评价
+      twoRateEvaluate: '', // 颈椎：侧屈肌力比评价
+
+      tRearProtractionLevel: '', // 躯干后伸等级图
+      tAnteflexionLevel: '', // 躯干前屈等级图
+      threeRateLevel: '', // 躯干：后伸/前屈肌力比等级图
+      tRearProtractionEvaluate: '', // 躯干后伸评价
+      tAnteflexionEvaluate: '', // 躯干前屈评价
+      threeRateEvaluate: '', // 躯干：后伸/前屈肌力比评价
+
+      tLeftSideLevel: '', // 躯干左侧屈等级图
+      tRightSideLevel: '', // 躯干右侧屈等级图
+      fourRateLevel: '', // 躯干：侧屈肌力比等级图
+      tLeftSideEvaluate: '', // 躯干左侧屈评价
+      tRightSideEvaluate: '', // 躯干右侧屈评价
+      fourRateEvaluate: '', // 躯干：侧屈肌力比评价
+
+      ulPushLevel: '', // 上肢推等级图
+      ulPullLevel: '', // 上肢拉等级图
+      fiveRateLevel: '', // 上肢：推/拉肌力比等级图
+      ulPushEvaluate: '', // 上肢推评价
+      ulPullEvaluate: '', // 上肢拉评价
+      fiveRateEvaluate: '', // 上肢：推/拉肌力比评价
+
+      ulLeftAbducentLevel: '', // 上肢左外展等级图
+      ulRightAbducentLevel: '', // 上肢右外展等级图
+      sixRateLevel: '', // 上肢：外展肌力比等级图
+      ulLeftAbducentEvaluate: '', // 上肢左外展评价
+      ulRightAbducentEvaluate: '', // 上肢右外展评价
+      sixRateEvaluate: '', // 上肢：外展肌力比评价
+
+      llAfterLeftOutLevel: '', // 下肢左后伸等级图
+      llAfterRightOutLevel: '', // 下肢右后伸等级图
+      sevenRateLevel: '', // 下肢：后伸肌力比等级图
+      llAfterLeftOutEvaluate: '', // 下肢左后伸评价
+      llAfterRightOutEvaluate: '', // 下肢右后伸评价
+      sevenRateEvaluate: '', // 下肢：后伸肌力比评价
+
+      llLeftAbducentLevel: '', // 下肢左外展等级图
+      llRightAbducentLevel: '', // 下肢右外展等级图
+      eightRateLevel: '', // 下肢：外展肌力比等级图
+      llLeftAbducentEvaluate: '', // 下肢左外展评价
+      llRightAbducentEvaluate: '', // 下肢右外展评价
+      eightRateEvaluate: '', // 下肢：外展肌力比评价
+
+      llLeftInsideCollectLevel: '', // 下肢左内收等级图
+      llRightInsideCollectLevel: '', // 下肢右内收等级图
+      nineRateLevel: '', // 下肢：内收肌力比等级图
+      llLeftInsideCollectEvaluate: '', // 下肢左内收评价
+      llRightInsideCollectEvaluate: '', // 下肢右内收评价
+      nineRateEvaluate: '' // 下肢：内收肌力比评价
     }
   },
 
@@ -270,12 +371,20 @@ export default {
           this.testData = res[0]
         })
         .then(() => {
-          // 计算肌力比
+          // 计算测量肌力比
           this.calculateMuscleRate()
         })
         .then(() => {
           // 计算推荐值
           this.calculateRecommend()
+        })
+        .then(() => {
+          // 计算得分
+          this.calculateScore()
+        })
+        .then(() => {
+          // 计算评价
+          this.calculateClassification()
         })
         .catch(err => {
           this.$confirm(
@@ -310,7 +419,7 @@ export default {
       const sex = this.testData.sex // 性别
       const weight = this.testData.weight // 体重（kg）
       const height = parseFloat((this.testData.height / 100).toFixed(2)) // 身高（m）
-      const currentAge = this.testData.currentAge // 当时的岁数
+      const currentAge = this.testData.currentAge // 当时测试时的岁数
       const bmi = parseInt((weight / height ** 2).toFixed(0))
       const sqrtWeight = Math.sqrt(weight / 23) // 开根号
 
@@ -325,9 +434,9 @@ export default {
       } else {
         if (currentAge >= 41) {
           this.cvRearProtractionRecommend =
-            0.16 * weight * (1 - (currentAge - 40) * 0.01)
+            0.18 * weight * (1 - (currentAge - 40) * 0.01)
         } else {
-          this.cvRearProtractionRecommend = 0.16 * weight
+          this.cvRearProtractionRecommend = 0.18 * weight
         }
       }
       this.cvRearProtractionRecommend = parseFloat(
@@ -345,14 +454,32 @@ export default {
       } else {
         if (currentAge >= 41) {
           this.cvAnteflexionRecommend =
-            0.115 * weight * (1 - (currentAge - 40) * 0.01)
+            0.106 * weight * (1 - (currentAge - 40) * 0.01)
         } else {
-          this.cvAnteflexionRecommend = 0.115 * weight
+          this.cvAnteflexionRecommend = 0.106 * weight
         }
       }
       this.cvAnteflexionRecommend = parseFloat(
         this.cvAnteflexionRecommend.toFixed(1)
       )
+
+      // 颈椎左侧屈
+      if (sex === '男') {
+        if (currentAge >= 41) {
+          this.cvLeftSideRecommend =
+            0.15 * weight * (1 - (currentAge - 40) * 0.01)
+        } else {
+          this.cvLeftSideRecommend = 0.15 * weight
+        }
+      } else {
+        if (currentAge >= 41) {
+          this.cvLeftSideRecommend =
+            0.12 * weight * (1 - (currentAge - 40) * 0.01)
+        } else {
+          this.cvLeftSideRecommend = 0.12 * weight
+        }
+      }
+      this.cvLeftSideRecommend = parseFloat(this.cvLeftSideRecommend.toFixed(1))
 
       // 颈椎右侧屈
       if (sex === '男') {
@@ -373,24 +500,6 @@ export default {
       this.cvRightSideRecommend = parseFloat(
         this.cvRightSideRecommend.toFixed(1)
       )
-
-      // 颈椎左侧屈
-      if (sex === '男') {
-        if (currentAge >= 41) {
-          this.cvLeftSideRecommend =
-            0.15 * weight * (1 - (currentAge - 40) * 0.01)
-        } else {
-          this.cvLeftSideRecommend = 0.15 * weight
-        }
-      } else {
-        if (currentAge >= 41) {
-          this.cvLeftSideRecommend =
-            0.12 * weight * (1 - (currentAge - 40) * 0.01)
-        } else {
-          this.cvLeftSideRecommend = 0.12 * weight
-        }
-      }
-      this.cvLeftSideRecommend = parseFloat(this.cvLeftSideRecommend.toFixed(1))
 
       // 躯干后伸
       if (sex === '男') {
@@ -1097,97 +1206,851 @@ export default {
     },
 
     /**
-     * @description: 计算肌力比
+     * @description: 计算测量肌力比
      */
     calculateMuscleRate() {
+      // 颈椎：后伸/前屈
       if (
         this.testData.resultValue.cvRearProtraction &&
         this.testData.resultValue.cvAnteflexion
       ) {
-        this.cvRearProtractionRate = (
-          (100 / this.testData.resultValue.cvAnteflexion) *
-          this.testData.resultValue.cvRearProtraction
-        ).toFixed(0)
+        this.cvRearProtractionRate = parseInt(
+          (
+            (100 / this.testData.resultValue.cvAnteflexion) *
+            this.testData.resultValue.cvRearProtraction
+          ).toFixed(0)
+        )
       }
 
+      // 颈椎：侧屈
       if (
-        this.testData.resultValue.cvRightSide &&
-        this.testData.resultValue.cvLeftSide
+        this.testData.resultValue.cvLeftSide &&
+        this.testData.resultValue.cvRightSide
       ) {
-        this.cvRightSideRate = (
-          (100 / this.testData.resultValue.cvLeftSide) *
-          this.testData.resultValue.cvRightSide
-        ).toFixed(0)
+        this.cvLeftSideRate = parseInt(
+          (
+            (100 / this.testData.resultValue.cvRightSide) *
+            this.testData.resultValue.cvLeftSide
+          ).toFixed(0)
+        )
       }
 
+      // 躯干：后伸/前屈
       if (
         this.testData.resultValue.tRearProtraction &&
         this.testData.resultValue.tAnteflexion
       ) {
-        this.tRearProtractionRate = (
-          (100 / this.testData.resultValue.tAnteflexion) *
-          this.testData.resultValue.tRearProtraction
-        ).toFixed(0)
+        this.tRearProtractionRate = parseInt(
+          (
+            (100 / this.testData.resultValue.tAnteflexion) *
+            this.testData.resultValue.tRearProtraction
+          ).toFixed(0)
+        )
       }
 
+      // 躯干：侧屈
       if (
         this.testData.resultValue.tLeftSide &&
         this.testData.resultValue.tRightSide
       ) {
-        this.tLeftSideRate = (
-          (100 / this.testData.resultValue.tRightSide) *
-          this.testData.resultValue.tLeftSide
-        ).toFixed(0)
+        this.tLeftSideRate = parseInt(
+          (
+            (100 / this.testData.resultValue.tRightSide) *
+            this.testData.resultValue.tLeftSide
+          ).toFixed(0)
+        )
       }
 
+      // 上肢：推/拉
       if (
         this.testData.resultValue.ulPush &&
         this.testData.resultValue.ulPull
       ) {
-        this.ulPushRate = (
-          (100 / this.testData.resultValue.ulPull) *
-          this.testData.resultValue.ulPush
-        ).toFixed(0)
+        this.ulPushRate = parseInt(
+          (
+            (100 / this.testData.resultValue.ulPull) *
+            this.testData.resultValue.ulPush
+          ).toFixed(0)
+        )
       }
 
+      // 上肢：外展
       if (
         this.testData.resultValue.ulLeftAbducent &&
         this.testData.resultValue.ulRightAbducent
       ) {
-        this.ulLeftAbducentRate = (
-          (100 / this.testData.resultValue.ulLeftAbducent) *
-          this.testData.resultValue.ulRightAbducent
-        ).toFixed(0)
+        this.ulLeftAbducentRate = parseInt(
+          (
+            (100 / this.testData.resultValue.ulRightAbducent) *
+            this.testData.resultValue.ulLeftAbducent
+          ).toFixed(0)
+        )
       }
 
+      // 下肢：后伸
       if (
         this.testData.resultValue.llAfterLeftOut &&
         this.testData.resultValue.llAfterRightOut
       ) {
-        this.llAfterLeftOutRate = (
-          (100 / this.testData.resultValue.llAfterRightOut) *
-          this.testData.resultValue.llAfterLeftOut
-        ).toFixed(0)
+        this.llAfterLeftOutRate = parseInt(
+          (
+            (100 / this.testData.resultValue.llAfterRightOut) *
+            this.testData.resultValue.llAfterLeftOut
+          ).toFixed(0)
+        )
       }
 
+      // 下肢：外展
       if (
         this.testData.resultValue.llLeftAbducent &&
         this.testData.resultValue.llRightAbducent
       ) {
-        this.llLeftAbducentRate = (
-          (100 / this.testData.resultValue.llRightAbducent) *
-          this.testData.resultValue.llLeftAbducent
-        ).toFixed(0)
+        this.llLeftAbducentRate = parseInt(
+          (
+            (100 / this.testData.resultValue.llRightAbducent) *
+            this.testData.resultValue.llLeftAbducent
+          ).toFixed(0)
+        )
       }
 
+      // 下肢：内收
       if (
         this.testData.resultValue.llLeftInsideCollect &&
         this.testData.resultValue.llRightInsideCollect
       ) {
-        this.llLeftInsideCollectRate = (
-          (100 / this.testData.resultValue.llRightInsideCollect) *
-          this.testData.resultValue.llLeftInsideCollect
-        ).toFixed(0)
+        this.llLeftInsideCollectRate = parseInt(
+          (
+            (100 / this.testData.resultValue.llRightInsideCollect) *
+            this.testData.resultValue.llLeftInsideCollect
+          ).toFixed(0)
+        )
+      }
+    },
+
+    /**
+     * @description: 计算得分
+     */
+    calculateScore() {
+      /* 颈椎：后伸/前屈 */
+      // 颈椎后伸
+      if (
+        this.testData.resultValue.cvRearProtraction <
+        this.cvRearProtractionRecommend * 2
+      ) {
+        this.cvRearProtractionScore =
+          (this.testData.resultValue.cvRearProtraction /
+            (this.cvRearProtractionRecommend * 2)) *
+          10
+      } else {
+        this.cvRearProtractionScore = 10
+      }
+      this.cvRearProtractionScore = parseFloat(
+        this.cvRearProtractionScore.toFixed(1)
+      )
+      // 颈椎前屈
+      if (
+        this.testData.resultValue.cvAnteflexion <
+        this.cvAnteflexionRecommend * 2
+      ) {
+        this.cvAnteflexionScore =
+          (this.testData.resultValue.cvAnteflexion /
+            (this.cvAnteflexionRecommend * 2)) *
+          10
+      } else {
+        this.cvAnteflexionScore = 10
+      }
+      this.cvAnteflexionScore = parseFloat(this.cvAnteflexionScore.toFixed(1))
+      // 肌力比得分
+      const one =
+        this.testData.resultValue.cvRearProtraction /
+        this.testData.resultValue.cvAnteflexion
+      if (this.testData.sex === '男') {
+        if (one >= 1.35 && one <= 1.45) {
+          this.oneRateScore = 10
+        } else if (one > 1.2 && one < 1.35) {
+          this.oneRateScore = 3.33 * (one - 1.2) * 10 + 5
+        } else if (one > 1.45 && one < 1.6) {
+          this.oneRateScore = 10 - 3.33 * (one - 1.45) * 10
+        } else if (one === 1.2 || one === 1.6) {
+          this.oneRateScore = 5
+        } else if (one > 1.05 && one < 1.2) {
+          this.oneRateScore = 5 - 3.33 * (1.2 - one) * 10
+        } else if (one > 1.6 && one < 1.75) {
+          this.oneRateScore = 5 - 3.33 * (one - 1.6) * 10
+        } else {
+          this.oneRateScore = 0
+        }
+      } else {
+        if (one >= 1.6 && one <= 1.75) {
+          this.oneRateScore = 10
+        } else if (one > 1.5 && one < 1.65) {
+          this.oneRateScore = 3.33 * (one - 1.5) * 10 + 5
+        } else if (one > 1.75 && one < 1.9) {
+          this.oneRateScore = 10 - 3.33 * (one - 1.75) * 10
+        } else if (one === 1.5 || one === 1.9) {
+          this.oneRateScore = 5
+        } else if (one > 1.35 && one < 1.5) {
+          this.oneRateScore = 5 - 3.33 * (1.5 - one) * 10
+        } else if (one > 1.9 && one < 2.05) {
+          this.oneRateScore = 5 - 3.33 * (one - 1.9) * 10
+        } else {
+          this.oneRateScore = 0
+        }
+      }
+      this.oneRateScore = parseFloat(this.oneRateScore.toFixed(1))
+
+      /* 颈椎：侧屈 */
+      // 颈椎左侧屈
+      if (this.testData.resultValue.cvLeftSide < this.cvLeftSideRecommend * 2) {
+        this.cvLeftSideScore =
+          (this.testData.resultValue.cvLeftSide /
+            (this.cvLeftSideRecommend * 2)) *
+          10
+      } else {
+        this.cvLeftSideScore = 10
+      }
+      this.cvLeftSideScore = parseFloat(this.cvLeftSideScore.toFixed(1))
+      // 颈椎右侧屈
+      if (
+        this.testData.resultValue.cvRightSide <
+        this.cvRightSideRecommend * 2
+      ) {
+        this.cvRightSideScore =
+          (this.testData.resultValue.cvRightSide /
+            (this.cvRightSideRecommend * 2)) *
+          10
+      } else {
+        this.cvRightSideScore = 10
+      }
+      this.cvRightSideScore = parseFloat(this.cvRightSideScore.toFixed(1))
+      // 肌力比得分
+      const two =
+        this.testData.resultValue.cvLeftSide /
+        this.testData.resultValue.cvRightSide
+      if (two >= 0.95 && two <= 1.05) {
+        this.twoRateScore = 10
+      } else if (two > 0.8 && two < 0.95) {
+        this.twoRateScore = 3.33 * (two - 0.8) * 10 + 5
+      } else if (two > 1.05 && two < 1.2) {
+        this.twoRateScore = 10 - 3.33 * (two - 1.05) * 10
+      } else if (two === 0.8 || two === 1.2) {
+        this.twoRateScore = 5
+      } else if (two > 0.65 && two < 0.8) {
+        this.twoRateScore = 5 - 3.33 * (0.8 - two) * 10
+      } else if (two > 1.2 && two < 1.35) {
+        this.twoRateScore = 5 - 3.33 * (two - 1.2) * 10
+      } else {
+        this.twoRateScore = 0
+      }
+      this.twoRateScore = parseFloat(this.twoRateScore.toFixed(1))
+
+      /* 躯干：后伸/前屈 */
+      // 躯干后伸
+      if (
+        this.testData.resultValue.tRearProtraction <
+        this.tRearProtractionRecommend * 2
+      ) {
+        this.tRearProtractionScore =
+          (this.testData.resultValue.tRearProtraction /
+            (this.tRearProtractionRecommend * 2)) *
+          10
+      } else {
+        this.tRearProtractionScore = 10
+      }
+      this.tRearProtractionScore = parseFloat(
+        this.tRearProtractionScore.toFixed(1)
+      )
+      // 躯干前屈
+      if (
+        this.testData.resultValue.tAnteflexion <
+        this.tAnteflexionRecommend * 2
+      ) {
+        this.tAnteflexionScore =
+          (this.testData.resultValue.tAnteflexion /
+            (this.tAnteflexionRecommend * 2)) *
+          10
+      } else {
+        this.tAnteflexionScore = 10
+      }
+      this.tAnteflexionScore = parseFloat(this.tAnteflexionScore.toFixed(1))
+      // 肌力比得分
+      const three =
+        this.testData.resultValue.tRearProtraction /
+        this.testData.resultValue.tAnteflexion
+      if (this.testData.sex === '男') {
+        if (three >= 1.2 && three <= 1.35) {
+          this.threeRateScore = 10
+        } else if (three > 1.1 && three < 1.25) {
+          this.threeRateScore = 3.33 * (three - 1.1) * 10 + 5
+        } else if (three > 1.35 && three < 1.5) {
+          this.threeRateScore = 10 - 3.33 * (three - 1.35) * 10
+        } else if (three === 1.1 || three === 1.5) {
+          this.threeRateScore = 5
+        } else if (three > 0.95 && three < 1.1) {
+          this.threeRateScore = 5 - 3.33 * (1.1 - three) * 10
+        } else if (three > 1.5 && three < 1.65) {
+          this.threeRateScore = 5 - 3.33 * (three - 1.5) * 10
+        } else {
+          this.threeRateScore = 0
+        }
+      } else {
+        if (three >= 1.45 && three <= 1.55) {
+          this.threeRateScore = 10
+        } else if (three > 1.3 && three < 1.45) {
+          this.threeRateScore = 3.33 * (three - 1.3) * 10 + 5
+        } else if (three > 1.55 && three < 1.7) {
+          this.threeRateScore = 10 - 3.33 * (three - 1.55) * 10
+        } else if (three === 1.3 || three === 1.7) {
+          this.threeRateScore = 5
+        } else if (three > 1.15 && three < 1.3) {
+          this.threeRateScore = 5 - 3.33 * (1.3 - three) * 10
+        } else if (three > 1.7 && three < 1.85) {
+          this.threeRateScore = 5 - 3.33 * (three - 1.7) * 10
+        } else {
+          this.threeRateScore = 0
+        }
+      }
+      this.threeRateScore = parseFloat(this.threeRateScore.toFixed(1))
+
+      /* 躯干：侧屈 */
+      // 躯干左侧屈
+      if (this.testData.resultValue.tLeftSide < this.tLeftSideRecommend * 2) {
+        this.tLeftSideScore =
+          (this.testData.resultValue.tLeftSide /
+            (this.tLeftSideRecommend * 2)) *
+          10
+      } else {
+        this.tLeftSideScore = 10
+      }
+      this.tLeftSideScore = parseFloat(this.tLeftSideScore.toFixed(1))
+      // 躯干右侧屈
+      if (this.testData.resultValue.tRightSide < this.tRightSideRecommend * 2) {
+        this.tRightSideScore =
+          (this.testData.resultValue.tRightSide /
+            (this.tRightSideRecommend * 2)) *
+          10
+      } else {
+        this.tRightSideScore = 10
+      }
+      this.tRightSideScore = parseFloat(this.tRightSideScore.toFixed(1))
+      // 肌力比得分
+      const four =
+        this.testData.resultValue.tLeftSide /
+        this.testData.resultValue.tRightSide
+      if (four >= 0.95 && four <= 1.05) {
+        this.fourRateScore = 10
+      } else if (four > 0.8 && four < 0.95) {
+        this.fourRateScore = 3.33 * (four - 0.8) * 10 + 5
+      } else if (four > 1.05 && four < 1.2) {
+        this.fourRateScore = 10 - 3.33 * (four - 1.05) * 10
+      } else if (four === 0.8 || four === 1.2) {
+        this.fourRateScore = 5
+      } else if (four > 0.65 && four < 0.8) {
+        this.fourRateScore = 5 - 3.33 * (0.8 - four) * 10
+      } else if (four > 1.2 && four < 1.35) {
+        this.fourRateScore = 5 - 3.33 * (four - 1.2) * 10
+      } else {
+        this.fourRateScore = 0
+      }
+      this.fourRateScore = parseFloat(this.fourRateScore.toFixed(1))
+
+      /* 上肢：推/拉 */
+      // 上肢推
+      if (this.testData.resultValue.ulPush < this.ulPushRecommend * 2) {
+        this.ulPushScore =
+          (this.testData.resultValue.ulPush / (this.ulPushRecommend * 2)) * 10
+      } else {
+        this.ulPushScore = 10
+      }
+      this.ulPushScore = parseFloat(this.ulPushScore.toFixed(1))
+      // 上肢拉
+      if (this.testData.resultValue.ulPull < this.ulPullRecommend * 2) {
+        this.ulPullScore =
+          (this.testData.resultValue.ulPull / (this.ulPullRecommend * 2)) * 10
+      } else {
+        this.ulPullScore = 10
+      }
+      this.ulPullScore = parseFloat(this.ulPullScore.toFixed(1))
+      // 肌力比得分
+      const five =
+        this.testData.resultValue.ulPush / this.testData.resultValue.ulPull
+      if (five >= 1.45 && five <= 1.55) {
+        this.fiveRateScore = 10
+      } else if (five > 1.3 && five < 1.45) {
+        this.fiveRateScore = 3.33 * (five - 1.3) * 10 + 5
+      } else if (five > 1.55 && five < 1.7) {
+        this.fiveRateScore = 10 - 3.33 * (five - 1.55) * 10
+      } else if (five === 1.3 || five === 1.7) {
+        this.fiveRateScore = 5
+      } else if (five > 1.15 && five < 1.3) {
+        this.fiveRateScore = 5 - 3.33 * (1.3 - five) * 10
+      } else if (five > 1.7 && five < 1.85) {
+        this.fiveRateScore = 5 - 3.33 * (five - 1.7) * 10
+      } else {
+        this.fiveRateScore = 0
+      }
+      this.fiveRateScore = parseFloat(this.fiveRateScore.toFixed(1))
+
+      /* 上肢：外展 */
+      // 上肢左外展
+      if (
+        this.testData.resultValue.ulLeftAbducent <
+        this.ulLeftAbducentRecommend * 2
+      ) {
+        this.ulLeftAbducentScore =
+          (this.testData.resultValue.ulLeftAbducent /
+            (this.ulLeftAbducentRecommend * 2)) *
+          10
+      } else {
+        this.ulLeftAbducentScore = 10
+      }
+      this.ulLeftAbducentScore = parseFloat(this.ulLeftAbducentScore.toFixed(1))
+      // 上肢右外展
+      if (
+        this.testData.resultValue.ulRightAbducent <
+        this.ulRightAbducentRecommend * 2
+      ) {
+        this.ulRightAbducentScore =
+          (this.testData.resultValue.ulRightAbducent /
+            (this.ulRightAbducentRecommend * 2)) *
+          10
+      } else {
+        this.ulRightAbducentScore = 10
+      }
+      this.ulRightAbducentScore = parseFloat(
+        this.ulRightAbducentScore.toFixed(1)
+      )
+      // 肌力比得分
+      const six =
+        this.testData.resultValue.ulLeftAbducent /
+        this.testData.resultValue.ulRightAbducent
+      if (six >= 0.95 && six <= 1.05) {
+        this.sixRateScore = 10
+      } else if (six > 0.8 && six < 0.95) {
+        this.sixRateScore = 3.33 * (six - 0.8) * 10 + 5
+      } else if (six > 1.05 && six < 1.2) {
+        this.sixRateScore = 10 - 3.33 * (six - 1.05) * 10
+      } else if (six === 0.8 || six === 1.2) {
+        this.sixRateScore = 5
+      } else if (six > 0.65 && six < 0.8) {
+        this.sixRateScore = 5 - 3.33 * (0.8 - six) * 10
+      } else if (six > 1.2 && six < 1.35) {
+        this.sixRateScore = 5 - 3.33 * (six - 1.2) * 10
+      } else {
+        this.sixRateScore = 0
+      }
+      this.sixRateScore = parseFloat(this.sixRateScore.toFixed(1))
+
+      /* 下肢：后伸 */
+      // 下肢左后伸
+      if (
+        this.testData.resultValue.llAfterLeftOut <
+        this.llAfterLeftOutRecommend * 2
+      ) {
+        this.llAfterLeftOutScore =
+          (this.testData.resultValue.llAfterLeftOut /
+            (this.llAfterLeftOutRecommend * 2)) *
+          10
+      } else {
+        this.llAfterLeftOutScore = 10
+      }
+      this.llAfterLeftOutScore = parseFloat(this.llAfterLeftOutScore.toFixed(1))
+      // 下肢右后伸
+      if (
+        this.testData.resultValue.llAfterRightOut <
+        this.llAfterRightOutRecommend * 2
+      ) {
+        this.llAfterRightOutScore =
+          (this.testData.resultValue.llAfterRightOut /
+            (this.llAfterRightOutRecommend * 2)) *
+          10
+      } else {
+        this.llAfterRightOutScore = 10
+      }
+      this.llAfterRightOutScore = parseFloat(
+        this.llAfterRightOutScore.toFixed(1)
+      )
+      // 肌力比得分
+      const seven =
+        this.testData.resultValue.llAfterLeftOut /
+        this.testData.resultValue.llAfterRightOut
+      if (seven >= 0.95 && seven <= 1.05) {
+        this.sevenRateScore = 10
+      } else if (seven > 0.8 && seven < 0.95) {
+        this.sevenRateScore = 3.33 * (seven - 0.8) * 10 + 5
+      } else if (seven > 1.05 && seven < 1.2) {
+        this.sevenRateScore = 10 - 3.33 * (seven - 1.05) * 10
+      } else if (seven === 0.8 || seven === 1.2) {
+        this.sevenRateScore = 5
+      } else if (seven > 0.65 && seven < 0.8) {
+        this.sevenRateScore = 5 - 3.33 * (0.8 - seven) * 10
+      } else if (seven > 1.2 && seven < 1.35) {
+        this.sevenRateScore = 5 - 3.33 * (seven - 1.2) * 10
+      } else {
+        this.sevenRateScore = 0
+      }
+      this.sevenRateScore = parseFloat(this.sevenRateScore.toFixed(1))
+
+      /* 下肢：外展 */
+      // 下肢左外展
+      if (
+        this.testData.resultValue.llLeftAbducent <
+        this.llLeftAbducentRecommend * 2
+      ) {
+        this.llLeftAbducentScore =
+          (this.testData.resultValue.llLeftAbducent /
+            (this.llLeftAbducentRecommend * 2)) *
+          10
+      } else {
+        this.llLeftAbducentScore = 10
+      }
+      this.llLeftAbducentScore = parseFloat(this.llLeftAbducentScore.toFixed(1))
+      // 下肢右外展
+      if (
+        this.testData.resultValue.llRightAbducent <
+        this.llRightAbducentRecommend * 2
+      ) {
+        this.llRightAbducentScore =
+          (this.testData.resultValue.llRightAbducent /
+            (this.llRightAbducentRecommend * 2)) *
+          10
+      } else {
+        this.llRightAbducentScore = 10
+      }
+      this.llRightAbducentScore = parseFloat(
+        this.llRightAbducentScore.toFixed(1)
+      )
+      // 肌力比得分
+      const eight =
+        this.testData.resultValue.llLeftAbducent /
+        this.testData.resultValue.llRightAbducent
+      if (eight >= 0.95 && eight <= 1.05) {
+        this.eightRateScore = 10
+      } else if (eight > 0.8 && eight < 0.95) {
+        this.eightRateScore = 3.33 * (eight - 0.8) * 10 + 5
+      } else if (eight > 1.05 && eight < 1.2) {
+        this.eightRateScore = 10 - 3.33 * (eight - 1.05) * 10
+      } else if (eight === 0.8 || eight === 1.2) {
+        this.eightRateScore = 5
+      } else if (eight > 0.65 && eight < 0.8) {
+        this.eightRateScore = 5 - 3.33 * (0.8 - eight) * 10
+      } else if (eight > 1.2 && eight < 1.35) {
+        this.eightRateScore = 5 - 3.33 * (eight - 1.2) * 10
+      } else {
+        this.eightRateScore = 0
+      }
+      this.eightRateScore = parseFloat(this.eightRateScore.toFixed(1))
+
+      /* 下肢：内收 */
+      // 下肢左内收
+      if (
+        this.testData.resultValue.llLeftInsideCollect <
+        this.llLeftInsideCollectRecommend * 2
+      ) {
+        this.llLeftInsideCollectScore =
+          (this.testData.resultValue.llLeftInsideCollect /
+            (this.llLeftInsideCollectRecommend * 2)) *
+          10
+      } else {
+        this.llLeftInsideCollectScore = 10
+      }
+      this.llLeftInsideCollectScore = parseFloat(
+        this.llLeftInsideCollectScore.toFixed(1)
+      )
+      // 下肢右内收
+      if (
+        this.testData.resultValue.llRightInsideCollect <
+        this.llRightInsideCollectRecommend * 2
+      ) {
+        this.llRightInsideCollectScore =
+          (this.testData.resultValue.llRightInsideCollect /
+            (this.llRightInsideCollectRecommend * 2)) *
+          10
+      } else {
+        this.llRightInsideCollectScore = 10
+      }
+      this.llRightInsideCollectScore = parseFloat(
+        this.llRightInsideCollectScore.toFixed(1)
+      )
+      // 肌力比得分
+      const nine =
+        this.testData.resultValue.llLeftInsideCollect /
+        this.testData.resultValue.llRightInsideCollect
+      if (nine >= 0.95 && nine <= 1.05) {
+        this.nineRateScore = 10
+      } else if (nine > 0.8 && nine < 0.95) {
+        this.nineRateScore = 3.33 * (nine - 0.8) * 10 + 5
+      } else if (nine > 1.05 && nine < 1.2) {
+        this.nineRateScore = 10 - 3.33 * (nine - 1.05) * 10
+      } else if (nine === 0.8 || nine === 1.2) {
+        this.nineRateScore = 5
+      } else if (nine > 0.65 && nine < 0.8) {
+        this.nineRateScore = 5 - 3.33 * (0.8 - nine) * 10
+      } else if (nine > 1.2 && nine < 1.35) {
+        this.nineRateScore = 5 - 3.33 * (nine - 1.2) * 10
+      } else {
+        this.nineRateScore = 0
+      }
+      this.nineRateScore = parseFloat(this.nineRateScore.toFixed(1))
+    },
+
+    /**
+     * @description: 计算分级评价
+     */
+    calculateClassification() {
+      const oneEvaluate = '差'
+      const twoEvaluate = '较差'
+      const threeEvaluate = '中'
+      const fourEvaluate = '良'
+      const fiveEvaluate = '优秀'
+
+      /* 颈椎：后伸/前屈 */
+      // 颈椎后伸
+      if (this.cvRearProtractionScore < 4) {
+        this.cvRearProtractionLevel = this.oneLevel
+        this.cvRearProtractionEvaluate = oneEvaluate
+      } else if (
+        this.cvRearProtractionScore >= 4 &&
+        this.cvRearProtractionScore < 5
+      ) {
+        this.cvRearProtractionLevel = this.twoLevel
+        this.cvRearProtractionEvaluate = twoEvaluate
+      } else if (
+        this.cvRearProtractionScore >= 5 &&
+        this.cvRearProtractionScore < 7
+      ) {
+        this.cvRearProtractionLevel = this.threeLevel
+        this.cvRearProtractionEvaluate = threeEvaluate
+      } else if (
+        this.cvRearProtractionScore >= 7 &&
+        this.cvRearProtractionScore < 8
+      ) {
+        this.cvRearProtractionLevel = this.fourLevel
+        this.cvRearProtractionEvaluate = fourEvaluate
+      } else {
+        this.cvRearProtractionLevel = this.fiveLevel
+        this.cvRearProtractionEvaluate = fiveEvaluate
+      }
+      // 颈椎前屈
+      if (this.cvAnteflexionScore < 4) {
+        this.cvAnteflexionLevel = this.oneLevel
+        this.cvAnteflexionEvaluate = oneEvaluate
+      } else if (this.cvAnteflexionScore >= 4 && this.cvAnteflexionScore < 5) {
+        this.cvAnteflexionLevel = this.twoLevel
+        this.cvAnteflexionEvaluate = twoEvaluate
+      } else if (this.cvAnteflexionScore >= 5 && this.cvAnteflexionScore < 7) {
+        this.cvAnteflexionLevel = this.threeLevel
+        this.cvAnteflexionEvaluate = threeEvaluate
+      } else if (this.cvAnteflexionScore >= 7 && this.cvAnteflexionScore < 8) {
+        this.cvAnteflexionLevel = this.fourLevel
+        this.cvAnteflexionEvaluate = fourEvaluate
+      } else {
+        this.cvAnteflexionLevel = this.fiveLevel
+        this.cvAnteflexionEvaluate = fiveEvaluate
+      }
+      // 肌力比
+      if (this.oneRateScore < 4) {
+        this.oneRateLevel = this.oneLevel
+        this.oneRateEvaluate = oneEvaluate
+      } else if (this.oneRateScore >= 4 && this.oneRateScore < 5) {
+        this.oneRateLevel = this.twoLevel
+        this.oneRateEvaluate = twoEvaluate
+      } else if (this.oneRateScore >= 5 && this.oneRateScore < 7) {
+        this.oneRateLevel = this.threeLevel
+        this.oneRateEvaluate = threeEvaluate
+      } else if (this.oneRateScore >= 7 && this.oneRateScore < 8) {
+        this.oneRateLevel = this.fourLevel
+        this.oneRateEvaluate = fourEvaluate
+      } else {
+        this.oneRateLevel = this.fiveLevel
+        this.oneRateEvaluate = fiveEvaluate
+      }
+
+      /* 颈椎：侧屈 */
+      // 颈椎左侧屈
+      if (this.cvLeftSideScore < 4) {
+        this.cvLeftSideLevel = this.oneLevel
+        this.cvLeftSideEvaluate = oneEvaluate
+      } else if (this.cvLeftSideScore >= 4 && this.cvLeftSideScore < 5) {
+        this.cvLeftSideLevel = this.twoLevel
+        this.cvLeftSideEvaluate = twoEvaluate
+      } else if (this.cvLeftSideScore >= 5 && this.cvLeftSideScore < 7) {
+        this.cvLeftSideLevel = this.threeLevel
+        this.cvLeftSideEvaluate = threeEvaluate
+      } else if (this.cvLeftSideScore >= 7 && this.cvLeftSideScore < 8) {
+        this.cvLeftSideLevel = this.fourLevel
+        this.cvLeftSideEvaluate = fourEvaluate
+      } else {
+        this.cvLeftSideLevel = this.fiveLevel
+        this.cvLeftSideEvaluate = fiveEvaluate
+      }
+      // 颈椎右侧屈
+      if (this.cvRightSideScore < 4) {
+        this.cvRightSideLevel = this.oneLevel
+        this.cvRightSideEvaluate = oneEvaluate
+      } else if (this.cvRightSideScore >= 4 && this.cvRightSideScore < 5) {
+        this.cvRightSideLevel = this.twoLevel
+        this.cvRightSideEvaluate = twoEvaluate
+      } else if (this.cvRightSideScore >= 5 && this.cvRightSideScore < 7) {
+        this.cvRightSideLevel = this.threeLevel
+        this.cvRightSideEvaluate = threeEvaluate
+      } else if (this.cvRightSideScore >= 7 && this.cvRightSideScore < 8) {
+        this.cvRightSideLevel = this.fourLevel
+        this.cvRightSideEvaluate = fourEvaluate
+      } else {
+        this.cvRightSideLevel = this.fiveLevel
+        this.cvRightSideEvaluate = fiveEvaluate
+      }
+      // 肌力比
+      if (this.twoRateScore < 4) {
+        this.twoRateLevel = this.oneLevel
+        this.twoRateEvaluate = oneEvaluate
+      } else if (this.twoRateScore >= 4 && this.twoRateScore < 5) {
+        this.twoRateLevel = this.twoLevel
+        this.twoRateEvaluate = twoEvaluate
+      } else if (this.twoRateScore >= 5 && this.twoRateScore < 7) {
+        this.twoRateLevel = this.threeLevel
+        this.twoRateEvaluate = threeEvaluate
+      } else if (this.twoRateScore >= 7 && this.twoRateScore < 8) {
+        this.twoRateLevel = this.fourLevel
+        this.twoRateEvaluate = fourEvaluate
+      } else {
+        this.twoRateLevel = this.fiveLevel
+        this.twoRateEvaluate = fiveEvaluate
+      }
+
+      /* 躯干：后伸/前屈 */
+      // 躯干后伸
+      if (this.tRearProtractionScore < 4) {
+        this.tRearProtractionLevel = this.oneLevel
+        this.tRearProtractionEvaluate = oneEvaluate
+      } else if (
+        this.tRearProtractionScore >= 4 &&
+        this.tRearProtractionScore < 5
+      ) {
+        this.tRearProtractionLevel = this.twoLevel
+        this.tRearProtractionEvaluate = twoEvaluate
+      } else if (
+        this.tRearProtractionScore >= 5 &&
+        this.tRearProtractionScore < 7
+      ) {
+        this.tRearProtractionLevel = this.threeLevel
+        this.tRearProtractionEvaluate = threeEvaluate
+      } else if (
+        this.tRearProtractionScore >= 7 &&
+        this.tRearProtractionScore < 8
+      ) {
+        this.tRearProtractionLevel = this.fourLevel
+        this.tRearProtractionEvaluate = fourEvaluate
+      } else {
+        this.tRearProtractionLevel = this.fiveLevel
+        this.tRearProtractionEvaluate = fiveEvaluate
+      }
+      // 躯干前屈
+      if (this.tAnteflexionScore < 4) {
+        this.tAnteflexionLevel = this.oneLevel
+        this.tAnteflexionEvaluate = oneEvaluate
+      } else if (this.tAnteflexionScore >= 4 && this.tAnteflexionScore < 5) {
+        this.tAnteflexionLevel = this.twoLevel
+        this.tAnteflexionEvaluate = twoEvaluate
+      } else if (this.tAnteflexionScore >= 5 && this.tAnteflexionScore < 7) {
+        this.tAnteflexionLevel = this.threeLevel
+        this.tAnteflexionEvaluate = threeEvaluate
+      } else if (this.tAnteflexionScore >= 7 && this.tAnteflexionScore < 8) {
+        this.tAnteflexionLevel = this.fourLevel
+        this.tAnteflexionEvaluate = fourEvaluate
+      } else {
+        this.tAnteflexionLevel = this.fiveLevel
+        this.tAnteflexionEvaluate = fiveEvaluate
+      }
+      // 肌力比
+      if (this.threeRateScore < 4) {
+        this.threeRateLevel = this.oneLevel
+        this.threeRateEvaluate = oneEvaluate
+      } else if (this.threeRateScore >= 4 && this.threeRateScore < 5) {
+        this.threeRateLevel = this.twoLevel
+        this.threeRateEvaluate = twoEvaluate
+      } else if (this.threeRateScore >= 5 && this.threeRateScore < 7) {
+        this.threeRateLevel = this.threeLevel
+        this.threeRateEvaluate = threeEvaluate
+      } else if (this.threeRateScore >= 7 && this.threeRateScore < 8) {
+        this.threeRateLevel = this.fourLevel
+        this.threeRateEvaluate = fourEvaluate
+      } else {
+        this.threeRateLevel = this.fiveLevel
+        this.threeRateEvaluate = fiveEvaluate
+      }
+
+      // tLeftSideScore: '', // 躯干左侧屈得分
+      // tRightSideScore: '', // 躯干右侧屈得分
+      // fourRateScore: '', // 躯干：侧屈肌力比得分
+
+      // tLeftSideLevel: '', // 躯干左侧屈等级图
+      // tRightSideLevel: '', // 躯干右侧屈等级图
+      // fourRateLevel: '', // 躯干：侧屈肌力比等级图
+      // tLeftSideEvaluate: '', // 躯干左侧屈评价
+      // tRightSideEvaluate: '', // 躯干右侧屈评价
+      // fourRateEvaluate: '', // 躯干：侧屈肌力比评价
+      /* 躯干：侧屈 */
+      // 躯干左侧屈
+      if (this.tRearProtractionScore < 4) {
+        this.tRearProtractionLevel = this.oneLevel
+        this.tRearProtractionEvaluate = oneEvaluate
+      } else if (
+        this.tRearProtractionScore >= 4 &&
+        this.tRearProtractionScore < 5
+      ) {
+        this.tRearProtractionLevel = this.twoLevel
+        this.tRearProtractionEvaluate = twoEvaluate
+      } else if (
+        this.tRearProtractionScore >= 5 &&
+        this.tRearProtractionScore < 7
+      ) {
+        this.tRearProtractionLevel = this.threeLevel
+        this.tRearProtractionEvaluate = threeEvaluate
+      } else if (
+        this.tRearProtractionScore >= 7 &&
+        this.tRearProtractionScore < 8
+      ) {
+        this.tRearProtractionLevel = this.fourLevel
+        this.tRearProtractionEvaluate = fourEvaluate
+      } else {
+        this.tRearProtractionLevel = this.fiveLevel
+        this.tRearProtractionEvaluate = fiveEvaluate
+      }
+      // 躯干右侧屈
+      if (this.tAnteflexionScore < 4) {
+        this.tAnteflexionLevel = this.oneLevel
+        this.tAnteflexionEvaluate = oneEvaluate
+      } else if (this.tAnteflexionScore >= 4 && this.tAnteflexionScore < 5) {
+        this.tAnteflexionLevel = this.twoLevel
+        this.tAnteflexionEvaluate = twoEvaluate
+      } else if (this.tAnteflexionScore >= 5 && this.tAnteflexionScore < 7) {
+        this.tAnteflexionLevel = this.threeLevel
+        this.tAnteflexionEvaluate = threeEvaluate
+      } else if (this.tAnteflexionScore >= 7 && this.tAnteflexionScore < 8) {
+        this.tAnteflexionLevel = this.fourLevel
+        this.tAnteflexionEvaluate = fourEvaluate
+      } else {
+        this.tAnteflexionLevel = this.fiveLevel
+        this.tAnteflexionEvaluate = fiveEvaluate
+      }
+      // 肌力比
+      if (this.threeRateScore < 4) {
+        this.threeRateLevel = this.oneLevel
+        this.threeRateEvaluate = oneEvaluate
+      } else if (this.threeRateScore >= 4 && this.threeRateScore < 5) {
+        this.threeRateLevel = this.twoLevel
+        this.threeRateEvaluate = twoEvaluate
+      } else if (this.threeRateScore >= 5 && this.threeRateScore < 7) {
+        this.threeRateLevel = this.threeLevel
+        this.threeRateEvaluate = threeEvaluate
+      } else if (this.threeRateScore >= 7 && this.threeRateScore < 8) {
+        this.threeRateLevel = this.fourLevel
+        this.threeRateEvaluate = fourEvaluate
+      } else {
+        this.threeRateLevel = this.fiveLevel
+        this.threeRateEvaluate = fiveEvaluate
       }
     },
 
