@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-16 11:38:38
- * @LastEditTime: 2022-10-12 09:47:39
+ * @LastEditTime: 2022-10-14 11:24:42
  * @Description : 测试项目选择
 -->
 <template>
@@ -148,7 +148,7 @@ export default {
 
   data() {
     return {
-      imgSrc: require('@/assets/img/Home/设备实物.png'),
+      imgSrc: require('@/assets/img/Test/select/全身等长设备外观.png'),
 
       centerDialogVisible: false, // 弹窗显隐
 

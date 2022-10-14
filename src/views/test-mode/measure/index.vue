@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-27 16:51:05
- * @LastEditTime: 2022-10-11 11:44:09
+ * @LastEditTime: 2022-10-14 17:14:50
  * @Description : 测试具体测量
 -->
 <template>
@@ -69,7 +69,11 @@
             icon="el-icon-check"
             :disabled="testValueArray.length === 3 ? false : true"
             @click="handleFinish"
-            >完 成</el-button
+            >{{
+              this.$store.state.selectResult.length === 1
+                ? '查看报告'
+                : '下一项'
+            }}</el-button
           >
         </div>
 

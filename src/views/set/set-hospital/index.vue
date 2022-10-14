@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-06-28 10:20:58
- * @LastEditTime: 2022-06-28 11:03:14
+ * @LastEditTime: 2022-10-14 17:07:48
  * @Description : 设置医院名称
 -->
 <template>

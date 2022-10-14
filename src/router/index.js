@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:06
- * @LastEditTime: 2022-10-09 16:52:30
+ * @LastEditTime: 2022-10-14 17:06:15
  * @Description : 路由
  */
 import Vue from 'vue'
@@ -211,6 +211,13 @@ const routes = [
         component: () =>
           import('@/views/test-mode/introduce/llRightInsideCollect'),
         meta: ['下肢右内收']
+      },
+
+      /* 数据记录 */
+      {
+        path: 'test-record',
+        name: 'test-record',
+        component: () => import('@/views/test-record')
       }
     ]
   },

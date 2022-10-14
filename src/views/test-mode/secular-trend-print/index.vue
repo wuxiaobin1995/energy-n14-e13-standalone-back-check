@@ -1,11 +1,14 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-10-09 11:36:48
- * @LastEditTime: 2022-10-09 11:38:02
+ * @LastEditTime: 2022-10-14 17:57:17
  * @Description : 长期趋势测试报告
 -->
 <template>
-  <div class="container">
+  <div
+    class="secular-trend-print"
+    v-loading.fullscreen.lock="fullscreenLoading"
+  >
     <!-- 主要区域 -->
     <div class="main-wrapper">
       <!-- 选项栏 -->
@@ -43,7 +46,7 @@
       <el-button type="primary" class="yes" @click="handlePrint"
         >保存pdf</el-button
       >
-      <el-button type="danger" class="cancel" @click="handleCancel"
+      <el-button type="danger" class="cancel" @click="handleToRecord"
         >返回</el-button
       >
     </div>
@@ -54,11 +57,22 @@
 import { initDB } from '@/db/index.js'
 
 export default {
-  name: 'secular-trend-pdf',
+  name: 'secular-trend-print',
 
   data() {
     return {
+      /* 路由传参 */
+      userId: JSON.parse(this.$route.query.userId),
+
+      fullscreenLoading: false, // 全屏加载
+
+      /* 图形相关变量 */
+      myChart: null,
+      option: {},
+
       /* 数值相关变量 */
+      allData: [], // 该用户的所有测试数据
+
       cvRearProtractionArray: [],
       cvAnteflexionArray: [],
       oneTimeArray: [],
@@ -86,7 +100,7 @@ export default {
       llLeftInsideCollectArray: [],
       llRightInsideCollectArray: [],
       nineTimeArray: [],
-      allData: [], // 该用户的所有测试数据
+
       /* 选项相关变量 */
       selectValue: '', // 所选的选项
       options: [
@@ -126,10 +140,7 @@ export default {
           value: 'llLeftInsideCollect-llRightInsideCollect',
           label: '下肢内收'
         }
-      ],
-      /* 图形相关变量 */
-      myChart: null,
-      option: {}
+      ]
     }
   },
 
@@ -142,13 +153,23 @@ export default {
 
   methods: {
     /**
-     * @description: 用户数据获取
+     * @description: 回到数据记录页
+     */
+    handleToRecord() {
+      this.$router.push({
+        path: '/test-record'
+      })
+    },
+
+    /**
+     * @description: 数据获取
      */
     initData() {
+      this.fullscreenLoading = true
       const db = initDB()
       db.test_data
         .where({
-          userId: this.$store.state.currentUserInfo.userId
+          userId: this.userId
         })
         .toArray()
         .then(res => {
@@ -194,72 +215,105 @@ export default {
 
           for (let i = 0; i < this.allData.length; i++) {
             const item = this.allData[i]
-            // 颈椎后伸/前屈
-            if (item.data.cvRearProtraction && item.data.cvAnteflexion) {
-              this.cvRearProtractionArray.push(item.data.cvRearProtraction)
-              this.cvAnteflexionArray.push(item.data.cvAnteflexion)
+            /* 颈椎后伸/前屈 */
+            if (
+              item.resultValue.cvRearProtraction &&
+              item.resultValue.cvAnteflexion
+            ) {
+              this.cvRearProtractionArray.push(
+                item.resultValue.cvRearProtraction
+              )
+              this.cvAnteflexionArray.push(item.resultValue.cvAnteflexion)
               this.oneTimeArray.push(item.pdfTime)
             }
-            // 颈椎侧屈
-            if (item.data.cvLeftSide && item.data.cvRightSide) {
-              this.cvLeftSideArray.push(item.data.cvLeftSide)
-              this.cvRightSideArray.push(item.data.cvRightSide)
+            /* 颈椎侧屈 */
+            if (item.resultValue.cvLeftSide && item.resultValue.cvRightSide) {
+              this.cvLeftSideArray.push(item.resultValue.cvLeftSide)
+              this.cvRightSideArray.push(item.resultValue.cvRightSide)
               this.twoTimeArray.push(item.pdfTime)
             }
-            // 躯干后伸/前屈
-            if (item.data.tRearProtraction && item.data.tAnteflexion) {
-              this.tRearProtractionArray.push(item.data.tRearProtraction)
-              this.tAnteflexionArray.push(item.data.tAnteflexion)
+            /* 躯干后伸/前屈 */
+            if (
+              item.resultValue.tRearProtraction &&
+              item.resultValue.tAnteflexion
+            ) {
+              this.tRearProtractionArray.push(item.resultValue.tRearProtraction)
+              this.tAnteflexionArray.push(item.resultValue.tAnteflexion)
               this.threeTimeArray.push(item.pdfTime)
             }
-            // 躯干侧屈
-            if (item.data.tLeftSide && item.data.tRightSide) {
-              this.tLeftSideArray.push(item.data.tLeftSide)
-              this.tRightSideArray.push(item.data.tRightSide)
+            /* 躯干侧屈 */
+            if (item.resultValue.tLeftSide && item.resultValue.tRightSide) {
+              this.tLeftSideArray.push(item.resultValue.tLeftSide)
+              this.tRightSideArray.push(item.resultValue.tRightSide)
               this.fourTimeArray.push(item.pdfTime)
             }
-            // 上肢推/拉
-            if (item.data.ulPush && item.data.ulPull) {
-              this.ulPushArray.push(item.data.ulPush)
-              this.ulPullArray.push(item.data.ulPull)
+            /* 上肢推/拉 */
+            if (item.resultValue.ulPush && item.resultValue.ulPull) {
+              this.ulPushArray.push(item.resultValue.ulPush)
+              this.ulPullArray.push(item.resultValue.ulPull)
               this.fiveTimeArray.push(item.pdfTime)
             }
-            // 上肢外展
-            if (item.data.ulLeftAbducent && item.data.ulRightAbducent) {
-              this.ulLeftAbducentArray.push(item.data.ulLeftAbducent)
-              this.ulRightAbducentArray.push(item.data.ulRightAbducent)
+            /* 上肢外展 */
+            if (
+              item.resultValue.ulLeftAbducent &&
+              item.resultValue.ulRightAbducent
+            ) {
+              this.ulLeftAbducentArray.push(item.resultValue.ulLeftAbducent)
+              this.ulRightAbducentArray.push(item.resultValue.ulRightAbducent)
               this.sixTimeArray.push(item.pdfTime)
             }
-            // 下肢后伸
-            if (item.data.llAfterLeftOut && item.data.llAfterRightOut) {
-              this.llAfterLeftOutArray.push(item.data.llAfterLeftOut)
-              this.llAfterRightOutArray.push(item.data.llAfterRightOut)
+            /* 下肢后伸 */
+            if (
+              item.resultValue.llAfterLeftOut &&
+              item.resultValue.llAfterRightOut
+            ) {
+              this.llAfterLeftOutArray.push(item.resultValue.llAfterLeftOut)
+              this.llAfterRightOutArray.push(item.resultValue.llAfterRightOut)
               this.sevenTimeArray.push(item.pdfTime)
             }
-            // 下肢外展
-            if (item.data.llLeftAbducent && item.data.llRightAbducent) {
-              this.llLeftAbducentArray.push(item.data.llLeftAbducent)
-              this.llRightAbducentArray.push(item.data.llRightAbducent)
+            /* 下肢外展 */
+            if (
+              item.resultValue.llLeftAbducent &&
+              item.resultValue.llRightAbducent
+            ) {
+              this.llLeftAbducentArray.push(item.resultValue.llLeftAbducent)
+              this.llRightAbducentArray.push(item.resultValue.llRightAbducent)
               this.eightTimeArray.push(item.pdfTime)
             }
-            // 下肢内收
+            /* 下肢内收 */
             if (
-              item.data.llLeftInsideCollect &&
-              item.data.llRightInsideCollect
+              item.resultValue.llLeftInsideCollect &&
+              item.resultValue.llRightInsideCollect
             ) {
-              this.llLeftInsideCollectArray.push(item.data.llLeftInsideCollect)
+              this.llLeftInsideCollectArray.push(
+                item.resultValue.llLeftInsideCollect
+              )
               this.llRightInsideCollectArray.push(
-                item.data.llRightInsideCollect
+                item.resultValue.llRightInsideCollect
               )
               this.nineTimeArray.push(item.pdfTime)
             }
           }
         })
         .catch(err => {
-          this.$message({
-            message: `用户数据获取失败：${err}`,
-            type: 'error'
+          this.$confirm(`获取表格数据失败，请点击刷新按钮重试！`, '提示', {
+            type: 'warning',
+            center: true,
+            showClose: false,
+            closeOnClickModal: false,
+            closeOnPressEscape: false,
+            confirmButtonText: '刷 新',
+            cancelButtonText: '返回上一页'
           })
+            .then(() => {
+              this.handleRefresh()
+            })
+            .catch(() => {
+              this.handleToRecord()
+            })
+        })
+        .finally(() => {
+          this.fullscreenLoading = false
         })
     },
 
@@ -328,7 +382,8 @@ export default {
             smooth: true,
             showSymbol: false
           }
-        ]
+        ],
+        animation: false
       }
       this.myChart.setOption(this.option)
     },
@@ -383,7 +438,7 @@ export default {
             parseFloat((item * 1.3).toFixed(2))
           )
         } else {
-          recommendArray = this.cvAnteflexionArray.map(item =>
+          recommendArray = this.tAnteflexionArray.map(item =>
             parseFloat((item * 1.5).toFixed(2))
           )
         }
@@ -471,10 +526,16 @@ export default {
     },
 
     /**
-     * @description: 返回数据记录页
+     * @description: 刷新页面
      */
-    handleCancel() {
-      this.$router.push({ path: '/record' })
+    handleRefresh() {
+      this.$router.push({
+        path: '/refresh',
+        query: {
+          routerName: JSON.stringify('/secular-trend-print'),
+          duration: JSON.stringify(300)
+        }
+      })
     }
   }
 }
@@ -498,7 +559,7 @@ export default {
   }
 }
 
-.container {
+.secular-trend-print {
   width: 100vw;
   height: 100vh;
   padding: 40px 20px;
