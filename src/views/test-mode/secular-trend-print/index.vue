@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-10-09 11:36:48
- * @LastEditTime: 2022-10-14 17:57:17
+ * @LastEditTime: 2022-10-15 11:42:07
  * @Description : 长期趋势测试报告
 -->
 <template>
@@ -9,44 +9,52 @@
     class="secular-trend-print"
     v-loading.fullscreen.lock="fullscreenLoading"
   >
-    <!-- 主要区域 -->
-    <div class="main-wrapper">
-      <!-- 选项栏 -->
-      <div class="nav-wrapper">
-        <!-- 左半部 -->
-        <div class="text-print left">
-          <div>用户名：{{ this.$store.state.currentUserInfo.userName }}，</div>
-          <div>性别：{{ this.$store.state.currentUserInfo.sex }}</div>
-        </div>
-        <!-- 右半部 -->
-        <div class="no-print right">
-          <el-select
-            v-model="selectValue"
-            placeholder="请选择项目"
-            @change="handleSelectChange"
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </div>
+    <div class="title">
+      <div class="text">全身等长肌力测试趋势报告</div>
+      <el-image class="logo" :src="logoSrc" fit="scale-down"></el-image>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="info">
+      <div class="item">{{ hospital }}</div>
+      <div class="item">
+        姓名：{{ this.$store.state.currentUserInfo.userName }}
       </div>
-      <!-- 图形 -->
-      <div class="chart-print chart-wrapper">
-        <div id="chart" :style="{ width: '100%', height: '100%' }"></div>
+      <div class="item">性别：{{ this.$store.state.currentUserInfo.sex }}</div>
+      <div class="item">
+        出生日期：{{ this.$store.state.currentUserInfo.birthday }}
       </div>
     </div>
 
+    <div class="divider"></div>
+
+    <div class="select select-print">
+      <el-select
+        v-model="selectValue"
+        placeholder="请选择项目"
+        @change="handleSelectChange"
+      >
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
+    </div>
+
+    <div class="chart chart-print">
+      <div id="chart" :style="{ width: '100%', height: '100%' }"></div>
+    </div>
+
     <!-- 按钮组 -->
-    <div class="no-print btn-wrapper">
-      <el-button type="primary" class="yes" @click="handlePrint"
+    <div class="btn btn-print">
+      <el-button type="primary" class="item" @click="handlePrint"
         >保存pdf</el-button
       >
-      <el-button type="danger" class="cancel" @click="handleToRecord"
+      <el-button type="danger" class="item" @click="handleToRecord"
         >返回</el-button
       >
     </div>
@@ -64,7 +72,11 @@ export default {
       /* 路由传参 */
       userId: JSON.parse(this.$route.query.userId),
 
+      logoSrc: require('@/assets/img/Company_Logo/logo_1.png'), // 公司logo
       fullscreenLoading: false, // 全屏加载
+      hospital: window.localStorage.getItem('hospital')
+        ? window.localStorage.getItem('hospital')
+        : '未设置所在医院',
 
       /* 图形相关变量 */
       myChart: null,
@@ -144,11 +156,8 @@ export default {
     }
   },
 
-  created() {
-    this.initData()
-  },
   mounted() {
-    this.initChart()
+    this.getData()
   },
 
   methods: {
@@ -164,7 +173,7 @@ export default {
     /**
      * @description: 数据获取
      */
-    initData() {
+    getData() {
       this.fullscreenLoading = true
       const db = initDB()
       db.test_data
@@ -295,6 +304,9 @@ export default {
             }
           }
         })
+        .then(() => {
+          this.initChart()
+        })
         .catch(err => {
           this.$confirm(`获取表格数据失败，请点击刷新按钮重试！`, '提示', {
             type: 'warning',
@@ -322,16 +334,13 @@ export default {
      */
     initChart() {
       this.myChart = this.$echarts.init(document.getElementById('chart'))
+
       this.option = {
         title: {
-          text: '长期趋势报告',
-          subtext: '',
+          text: '',
           left: 'center',
           textStyle: {
-            fontSize: 30
-          },
-          subtextStyle: {
-            fontSize: 16
+            fontSize: 36
           }
         },
         grid: {
@@ -348,9 +357,9 @@ export default {
           name: '单位：kg',
           nameGap: 26
         },
-        // tooltip: {
-        //   trigger: 'axis'
-        // },
+        tooltip: {
+          trigger: 'axis'
+        },
         legend: {
           icon: 'roundRect',
           orient: 'vertical',
@@ -365,26 +374,23 @@ export default {
             name: '',
             data: [],
             type: 'line',
-            smooth: true,
+            lineStyle: {
+              type: 'dashed'
+            },
+            smooth: false,
             showSymbol: false
           },
           {
             name: '',
             data: [],
             type: 'line',
-            smooth: true,
-            showSymbol: false
-          },
-          {
-            name: '',
-            data: [],
-            type: 'line',
-            smooth: true,
+            smooth: false,
             showSymbol: false
           }
         ],
         animation: false
       }
+
       this.myChart.setOption(this.option)
     },
 
@@ -395,124 +401,83 @@ export default {
     handleSelectChange(value) {
       if (value === 'cvRearProtraction-cvAnteflexion') {
         // 颈椎后伸/前屈
-        this.option.title.subtext = '颈椎后伸/前屈'
+        this.option.title.text = '颈椎后伸/前屈'
         this.option.series[0].data = this.cvRearProtractionArray
         this.option.series[0].name = '颈椎后伸'
         this.option.series[1].data = this.cvAnteflexionArray
         this.option.series[1].name = '颈椎前屈'
-        let recommendArray = []
-        if (this.$store.state.currentUserInfo.sex === '男') {
-          recommendArray = this.cvAnteflexionArray.map(item =>
-            parseFloat((item * 1.4).toFixed(2))
-          )
-        } else {
-          recommendArray = this.cvAnteflexionArray.map(item =>
-            parseFloat((item * 1.7).toFixed(2))
-          )
-        }
-        this.option.series[2].data = recommendArray
-        this.option.series[2].name = '后伸推荐值'
         this.option.xAxis.data = this.oneTimeArray
         this.myChart.setOption(this.option)
       } else if (value === 'cvLeftSide-cvRightSide') {
         // 颈椎侧屈
-        this.option.title.subtext = '颈椎侧屈'
+        this.option.title.text = '颈椎侧屈'
         this.option.series[0].data = this.cvLeftSideArray
         this.option.series[0].name = '颈椎左侧屈'
         this.option.series[1].data = this.cvRightSideArray
         this.option.series[1].name = '颈椎右侧屈'
-        this.option.series[2].data = []
-        this.option.series[2].name = ''
         this.option.xAxis.data = this.twoTimeArray
         this.myChart.setOption(this.option)
       } else if (value === 'tRearProtraction-tAnteflexion') {
         // 躯干后伸/前屈
-        this.option.title.subtext = '躯干后伸/前屈'
+        this.option.title.text = '躯干后伸/前屈'
         this.option.series[0].data = this.tRearProtractionArray
         this.option.series[0].name = '躯干后伸'
         this.option.series[1].data = this.tAnteflexionArray
         this.option.series[1].name = '躯干前屈'
-        let recommendArray = []
-        if (this.$store.state.currentUserInfo.sex === '男') {
-          recommendArray = this.tAnteflexionArray.map(item =>
-            parseFloat((item * 1.3).toFixed(2))
-          )
-        } else {
-          recommendArray = this.tAnteflexionArray.map(item =>
-            parseFloat((item * 1.5).toFixed(2))
-          )
-        }
-        this.option.series[2].data = recommendArray
-        this.option.series[2].name = '后伸推荐值'
         this.option.xAxis.data = this.threeTimeArray
         this.myChart.setOption(this.option)
       } else if (value === 'tLeftSide-tRightSide') {
         // 躯干侧屈
-        this.option.title.subtext = '躯干侧屈'
+        this.option.title.text = '躯干侧屈'
         this.option.series[0].data = this.tLeftSideArray
         this.option.series[0].name = '躯干左侧屈'
         this.option.series[1].data = this.tRightSideArray
         this.option.series[1].name = '躯干右侧屈'
-        this.option.series[2].data = []
-        this.option.series[2].name = ''
         this.option.xAxis.data = this.fourTimeArray
         this.myChart.setOption(this.option)
       } else if (value === 'ulPush-ulPull') {
         // 上肢推/拉
-        this.option.title.subtext = '上肢推/拉'
+        this.option.title.text = '上肢推/拉'
         this.option.series[0].data = this.ulPushArray
         this.option.series[0].name = '上肢推'
         this.option.series[1].data = this.ulPullArray
         this.option.series[1].name = '上肢拉'
-        let recommendArray = this.ulPullArray.map(item =>
-          parseFloat((item * 1.5).toFixed(2))
-        )
-        this.option.series[2].data = recommendArray
-        this.option.series[2].name = '上肢推的推荐值'
         this.option.xAxis.data = this.fiveTimeArray
         this.myChart.setOption(this.option)
       } else if (value === 'ulLeftAbducent-ulRightAbducent') {
         // 上肢外展
-        this.option.title.subtext = '上肢外展'
+        this.option.title.text = '上肢外展'
         this.option.series[0].data = this.ulLeftAbducentArray
         this.option.series[0].name = '上肢左外展'
         this.option.series[1].data = this.ulRightAbducentArray
         this.option.series[1].name = '上肢右外展'
-        this.option.series[2].data = []
-        this.option.series[2].name = ''
         this.option.xAxis.data = this.sixTimeArray
         this.myChart.setOption(this.option)
       } else if (value === 'llAfterLeftOut-llAfterRightOut') {
         // 下肢后伸
-        this.option.title.subtext = '下肢后伸'
+        this.option.title.text = '下肢后伸'
         this.option.series[0].data = this.llAfterLeftOutArray
         this.option.series[0].name = '下肢左后伸'
         this.option.series[1].data = this.llAfterRightOutArray
         this.option.series[1].name = '下肢右后伸'
-        this.option.series[2].data = []
-        this.option.series[2].name = ''
         this.option.xAxis.data = this.sevenTimeArray
         this.myChart.setOption(this.option)
       } else if (value === 'llLeftAbducent-llRightAbducent') {
         // 下肢外展
-        this.option.title.subtext = '下肢外展'
+        this.option.title.text = '下肢外展'
         this.option.series[0].data = this.llLeftAbducentArray
         this.option.series[0].name = '下肢左外展'
         this.option.series[1].data = this.llRightAbducentArray
         this.option.series[1].name = '下肢右外展'
-        this.option.series[2].data = []
-        this.option.series[2].name = ''
         this.option.xAxis.data = this.eightTimeArray
         this.myChart.setOption(this.option)
       } else if (value === 'llLeftInsideCollect-llRightInsideCollect') {
         // 下肢内收
-        this.option.title.subtext = '下肢内收'
+        this.option.title.text = '下肢内收'
         this.option.series[0].data = this.llLeftInsideCollectArray
         this.option.series[0].name = '下肢左内收'
         this.option.series[1].data = this.llRightInsideCollectArray
         this.option.series[1].name = '下肢右内收'
-        this.option.series[2].data = []
-        this.option.series[2].name = ''
         this.option.xAxis.data = this.nineTimeArray
         this.myChart.setOption(this.option)
       }
@@ -548,63 +513,63 @@ export default {
     // size: portrait; // 纵向打印
     size: landscape; // 横向打印
   }
-  .no-print {
+  .btn-print {
     display: none !important;
   }
   .chart-print {
     margin-top: 130px !important;
   }
-  .text-print {
-    font-size: 36px !important;
+  .select-print {
+    display: none !important;
   }
 }
 
 .secular-trend-print {
-  width: 100vw;
-  height: 100vh;
-  padding: 40px 20px;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  @include flex(column, stretch, stretch);
 
-  /* 主要区域 */
-  .main-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    // 选项栏
-    .nav-wrapper {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      .left {
-        display: flex;
-        margin-left: 40px;
-        font-size: 24px;
-      }
-      .right {
-        margin-right: 40px;
-      }
+  .divider {
+    margin-top: 8px;
+    border: 1px solid rgb(204, 204, 204);
+    width: 100%;
+  }
+
+  .title {
+    @include flex(row, space-between, center);
+    .text {
+      font-size: 42px;
     }
-    // 图形
-    .chart-wrapper {
-      width: 90%;
-      margin-top: 40px;
-      flex: 1;
+    .logo {
+      width: 160px;
     }
   }
 
-  /* 按钮组 */
-  .btn-wrapper {
-    display: flex;
-    justify-content: center;
-    .yes {
-      font-size: 30px;
-      margin-right: 40px;
+  .info {
+    margin-top: 8px;
+    @include flex(row, space-around, center);
+    .item {
+      font-size: 18px;
     }
-    .cancel {
+  }
+
+  .select {
+    margin: 10px 0 0 0;
+    @include flex(row, flex-end, center);
+  }
+
+  .chart {
+    flex: 1;
+    margin-top: 30px;
+  }
+
+  /* 按钮组 */
+  .btn {
+    @include flex(row, center, center);
+    .item {
       font-size: 30px;
-      margin-left: 40px;
+      margin: 0 40px;
     }
   }
 }

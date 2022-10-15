@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-10-14 17:00:22
- * @LastEditTime: 2022-10-14 17:56:15
+ * @LastEditTime: 2022-10-15 10:08:10
  * @Description : 数据记录
 -->
 <template>
@@ -55,7 +55,7 @@
           align="center"
           prop="pdfTime"
           label="测试时间"
-          width="240"
+          width="260"
           sortable
         />
         <!-- 测试项目 -->
@@ -330,7 +330,7 @@ export default {
               this.$message({
                 message: '数据删除成功',
                 type: 'success',
-                duration: 3000
+                duration: 2000
               })
             })
             .then(() => {

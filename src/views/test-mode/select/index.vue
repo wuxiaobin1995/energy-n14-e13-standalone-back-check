@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-16 11:38:38
- * @LastEditTime: 2022-10-14 11:24:42
+ * @LastEditTime: 2022-10-15 15:23:17
  * @Description : 测试项目选择
 -->
 <template>
@@ -13,57 +13,69 @@
         v-model="selectGroup"
         @change="handleChange"
       >
-        <el-checkbox
-          class="checkbox-reset"
-          label="颈椎：后伸/前屈"
-          border
-        ></el-checkbox>
-        <el-checkbox
-          class="checkbox-reset"
-          label="颈椎：侧屈"
-          border
-        ></el-checkbox>
-        <el-checkbox
-          class="checkbox-reset"
-          label="躯干：后伸/前屈"
-          border
-        ></el-checkbox>
-        <el-checkbox
-          class="checkbox-reset"
-          label="躯干：侧屈"
-          border
-        ></el-checkbox>
-        <el-checkbox
-          class="checkbox-reset"
-          label="上肢：推/拉"
-          border
-        ></el-checkbox>
-        <el-checkbox
-          class="checkbox-reset"
-          label="上肢：外展"
-          border
-        ></el-checkbox>
-        <el-checkbox
-          class="checkbox-reset"
-          label="下肢：后伸"
-          border
-        ></el-checkbox>
-        <el-checkbox
-          class="checkbox-reset"
-          label="下肢：外展"
-          border
-        ></el-checkbox>
-        <el-checkbox
-          class="checkbox-reset"
-          label="下肢：内收"
-          border
-        ></el-checkbox>
-      </el-checkbox-group>
+        <div class="row">
+          <el-checkbox class="checkbox-reset" label="颈椎：后伸/前屈" border>
+            <div class="box">
+              <el-image :src="imgSrc1" fit="scale-down"></el-image>
+              <div class="text-item">颈椎：后伸/前屈</div>
+            </div>
+          </el-checkbox>
+          <el-checkbox class="checkbox-reset" label="颈椎：侧屈" border>
+            <div class="box">
+              <el-image :src="imgSrc2" fit="scale-down"></el-image>
+              <div class="text-item">颈椎：侧屈</div>
+            </div>
+          </el-checkbox>
+          <el-checkbox class="checkbox-reset" label="躯干：后伸/前屈" border>
+            <div class="box">
+              <el-image :src="imgSrc3" fit="scale-down"></el-image>
+              <div class="text-item">躯干：后伸/前屈</div>
+            </div>
+          </el-checkbox>
+        </div>
 
-      <!-- 设备图 -->
-      <div class="img-wrapper">
-        <el-image class="img" :src="imgSrc" fit="scale-down"></el-image>
-      </div>
+        <div class="row">
+          <el-checkbox class="checkbox-reset" label="躯干：侧屈" border>
+            <div class="box">
+              <el-image :src="imgSrc4" fit="scale-down"></el-image>
+              <div class="text-item">躯干：侧屈</div>
+            </div>
+          </el-checkbox>
+          <el-checkbox class="checkbox-reset" label="上肢：推/拉" border>
+            <div class="box">
+              <el-image :src="imgSrc5" fit="scale-down"></el-image>
+              <div class="text-item">上肢：推/拉</div>
+            </div>
+          </el-checkbox>
+          <el-checkbox class="checkbox-reset" label="上肢：外展" border>
+            <div class="box">
+              <el-image :src="imgSrc6" fit="scale-down"></el-image>
+              <div class="text-item">上肢：外展</div>
+            </div>
+          </el-checkbox>
+        </div>
+
+        <div class="row">
+          <el-checkbox class="checkbox-reset" label="下肢：后伸" border>
+            <div class="box">
+              <el-image :src="imgSrc7" fit="scale-down"></el-image>
+              <div class="text-item">下肢：后伸</div>
+            </div>
+          </el-checkbox>
+          <el-checkbox class="checkbox-reset" label="下肢：外展" border>
+            <div class="box">
+              <el-image :src="imgSrc8" fit="scale-down"></el-image>
+              <div class="text-item">下肢：外展</div>
+            </div>
+          </el-checkbox>
+          <el-checkbox class="checkbox-reset" label="下肢：内收" border>
+            <div class="box">
+              <el-image :src="imgSrc9" fit="scale-down"></el-image>
+              <div class="text-item">下肢：内收</div>
+            </div>
+          </el-checkbox>
+        </div>
+      </el-checkbox-group>
 
       <!-- 右半部 -->
       <div class="right-wrapper">
@@ -148,7 +160,15 @@ export default {
 
   data() {
     return {
-      imgSrc: require('@/assets/img/Test/select/全身等长设备外观.png'),
+      imgSrc1: require('@/assets/img/Test/select/颈椎_后伸前屈.png'),
+      imgSrc2: require('@/assets/img/Test/select/颈椎_侧屈.png'),
+      imgSrc3: require('@/assets/img/Test/select/躯干_后伸前屈.png'),
+      imgSrc4: require('@/assets/img/Test/select/躯干_侧屈.png'),
+      imgSrc5: require('@/assets/img/Test/select/上肢_推拉.png'),
+      imgSrc6: require('@/assets/img/Test/select/上肢_外展.png'),
+      imgSrc7: require('@/assets/img/Test/select/下肢_后伸.png'),
+      imgSrc8: require('@/assets/img/Test/select/下肢_外展.png'),
+      imgSrc9: require('@/assets/img/Test/select/下肢_内收.png'),
 
       centerDialogVisible: false, // 弹窗显隐
 
@@ -308,29 +328,47 @@ export default {
     background-color: #ffffff;
     box-shadow: 0 0 10px #929292;
     padding: 20px 40px;
-    @include flex(row, space-between, stretch);
+    @include flex(row, space-between, center);
 
     /* 多项选择容器 */
     .checkbox-wrapper {
-      width: 30%;
+      width: 60%;
       @include flex(column, stretch, stretch);
-      .checkbox-reset {
-        margin: 12px 0;
+      .row {
+        @include flex(row, space-between, center);
+        margin: 10px 0;
+        .checkbox-reset {
+          width: 200px;
+          .box {
+            .text-item {
+              @include flex(row, center, center);
+              margin: 2px 0;
+              font-size: 16px;
+              font-weight: 700;
+            }
+          }
+        }
       }
-    }
-
-    /* 设备图 */
-    .img-wrapper {
-      width: 38%;
-      @include flex(row, center, center);
-      .img {
-        width: 100%;
+      /* 覆盖element-ui */
+      & /deep/ .el-checkbox.is-bordered {
+        padding: 0;
+        margin: 0;
+        border-radius: 16px;
+        height: auto;
+        box-shadow: 0 0 6px #d4d4d4;
+      }
+      & /deep/ .el-checkbox .el-checkbox__label {
+        padding: 5px;
+      }
+      & /deep/ .el-checkbox .el-checkbox__input {
+        display: none !important;
       }
     }
 
     /* 右半部 */
     .right-wrapper {
-      width: 30%;
+      width: 35%;
+      height: 100%;
       @include flex(column, stretch, stretch);
       // 展示窗
       .show-wrapper {
