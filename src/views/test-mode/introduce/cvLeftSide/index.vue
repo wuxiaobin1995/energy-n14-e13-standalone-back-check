@@ -1,7 +1,7 @@
 <!--
  * @Author      : 吴晓斌
  * @Date        : 2021-05-30 12:07:39
- * @LastEditTime: 2022-09-27 10:26:41
+ * @LastEditTime: 2022-10-17 10:55:08
  * @Description : 颈椎左侧屈-介绍页
 -->
 <template>
@@ -12,8 +12,8 @@
     <div class="wrapper">
       <!-- 左半部 -->
       <div class="left">
-        <img class="img" src="@/assets/img/Test/introduce/颈椎左侧屈.png" />
-        <img class="img" src="@/assets/img/Test/introduce/图标说明.png" />
+        <img class="img" src="@/assets/img/Test/Introduce/颈椎左侧屈.png" />
+        <img class="img" src="@/assets/img/Test/Introduce/图标说明.png" />
       </div>
 
       <!-- 右半部 -->

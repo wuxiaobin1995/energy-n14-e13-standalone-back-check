@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-16 11:38:38
- * @LastEditTime: 2022-10-15 15:23:17
+ * @LastEditTime: 2022-10-17 10:53:19
  * @Description : 测试项目选择
 -->
 <template>
@@ -91,7 +91,7 @@
             <el-table-column
               align="center"
               prop="name"
-              label="选定的测试类型"
+              label="请确认测试顺序"
             />
           </el-table>
         </div>
@@ -160,15 +160,15 @@ export default {
 
   data() {
     return {
-      imgSrc1: require('@/assets/img/Test/select/颈椎_后伸前屈.png'),
-      imgSrc2: require('@/assets/img/Test/select/颈椎_侧屈.png'),
-      imgSrc3: require('@/assets/img/Test/select/躯干_后伸前屈.png'),
-      imgSrc4: require('@/assets/img/Test/select/躯干_侧屈.png'),
-      imgSrc5: require('@/assets/img/Test/select/上肢_推拉.png'),
-      imgSrc6: require('@/assets/img/Test/select/上肢_外展.png'),
-      imgSrc7: require('@/assets/img/Test/select/下肢_后伸.png'),
-      imgSrc8: require('@/assets/img/Test/select/下肢_外展.png'),
-      imgSrc9: require('@/assets/img/Test/select/下肢_内收.png'),
+      imgSrc1: require('@/assets/img/Test/Select/颈椎_后伸前屈.png'),
+      imgSrc2: require('@/assets/img/Test/Select/颈椎_侧屈.png'),
+      imgSrc3: require('@/assets/img/Test/Select/躯干_后伸前屈.png'),
+      imgSrc4: require('@/assets/img/Test/Select/躯干_侧屈.png'),
+      imgSrc5: require('@/assets/img/Test/Select/上肢_推拉.png'),
+      imgSrc6: require('@/assets/img/Test/Select/上肢_外展.png'),
+      imgSrc7: require('@/assets/img/Test/Select/下肢_后伸.png'),
+      imgSrc8: require('@/assets/img/Test/Select/下肢_外展.png'),
+      imgSrc9: require('@/assets/img/Test/Select/下肢_内收.png'),
 
       centerDialogVisible: false, // 弹窗显隐
 

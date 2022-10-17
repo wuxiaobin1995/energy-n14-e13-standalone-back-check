@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-10-09 11:29:24
- * @LastEditTime: 2022-10-14 17:58:21
+ * @LastEditTime: 2022-10-17 09:37:36
  * @Description : 测试报告
 -->
 <template>
@@ -1304,31 +1304,31 @@ export default {
       logoSrc: require('@/assets/img/Company_Logo/logo_1.png'), // 公司logo
 
       /* 评分图 */
-      oneLevel: require('@/assets/img/Test/score_color/差.png'),
-      twoLevel: require('@/assets/img/Test/score_color/较差.png'),
-      threeLevel: require('@/assets/img/Test/score_color/中.png'),
-      fourLevel: require('@/assets/img/Test/score_color/良.png'),
-      fiveLevel: require('@/assets/img/Test/score_color/优秀.png'),
+      oneLevel: require('@/assets/img/Test/Score_Color/差.png'),
+      twoLevel: require('@/assets/img/Test/Score_Color/较差.png'),
+      threeLevel: require('@/assets/img/Test/Score_Color/中.png'),
+      fourLevel: require('@/assets/img/Test/Score_Color/良.png'),
+      fiveLevel: require('@/assets/img/Test/Score_Color/优秀.png'),
 
       /* 人体图 */
-      cvRearProtractionImg: require('@/assets/img/Test/body_maps/颈椎后伸.png'), // 颈椎后伸
-      cvAnteflexionImg: require('@/assets/img/Test/body_maps/颈椎前屈.png'), // 颈椎前屈
-      cvLeftSideImg: require('@/assets/img/Test/body_maps/颈椎左侧屈.png'), // 颈椎左侧屈
-      cvRightSideImg: require('@/assets/img/Test/body_maps/颈椎右侧屈.png'), // 颈椎右侧屈
-      tRearProtractionImg: require('@/assets/img/Test/body_maps/躯干后伸.png'), // 躯干后伸
-      tAnteflexionImg: require('@/assets/img/Test/body_maps/躯干前屈.png'), // 躯干前屈
-      tLeftSideImg: require('@/assets/img/Test/body_maps/躯干左侧屈.png'), // 躯干左侧屈
-      tRightSideImg: require('@/assets/img/Test/body_maps/躯干右侧屈.png'), // 躯干右侧屈
-      ulPushImg: require('@/assets/img/Test/body_maps/上肢推.png'), // 上肢推
-      ulPullImg: require('@/assets/img/Test/body_maps/上肢拉.png'), // 上肢拉
-      ulLeftAbducentImg: require('@/assets/img/Test/body_maps/上肢左外展.png'), // 上肢左外展
-      ulRightAbducentImg: require('@/assets/img/Test/body_maps/上肢右外展.png'), // 上肢右外展
-      llAfterLeftOutImg: require('@/assets/img/Test/body_maps/下肢左后伸.png'), // 下肢左后伸
-      llAfterRightOutImg: require('@/assets/img/Test/body_maps/下肢右后伸.png'), // 下肢右后伸
-      llLeftAbducentImg: require('@/assets/img/Test/body_maps/下肢左外展.png'), // 下肢左外展
-      llRightAbducentImg: require('@/assets/img/Test/body_maps/下肢右外展.png'), // 下肢右外展
-      llLeftInsideCollectImg: require('@/assets/img/Test/body_maps/下肢左内收.png'), // 下肢左内收
-      llRightInsideCollectImg: require('@/assets/img/Test/body_maps/下肢右内收.png'), // 下肢右内收
+      cvRearProtractionImg: require('@/assets/img/Test/Body_Maps/颈椎后伸.png'), // 颈椎后伸
+      cvAnteflexionImg: require('@/assets/img/Test/Body_Maps/颈椎前屈.png'), // 颈椎前屈
+      cvLeftSideImg: require('@/assets/img/Test/Body_Maps/颈椎左侧屈.png'), // 颈椎左侧屈
+      cvRightSideImg: require('@/assets/img/Test/Body_Maps/颈椎右侧屈.png'), // 颈椎右侧屈
+      tRearProtractionImg: require('@/assets/img/Test/Body_Maps/躯干后伸.png'), // 躯干后伸
+      tAnteflexionImg: require('@/assets/img/Test/Body_Maps/躯干前屈.png'), // 躯干前屈
+      tLeftSideImg: require('@/assets/img/Test/Body_Maps/躯干左侧屈.png'), // 躯干左侧屈
+      tRightSideImg: require('@/assets/img/Test/Body_Maps/躯干右侧屈.png'), // 躯干右侧屈
+      ulPushImg: require('@/assets/img/Test/Body_Maps/上肢推.png'), // 上肢推
+      ulPullImg: require('@/assets/img/Test/Body_Maps/上肢拉.png'), // 上肢拉
+      ulLeftAbducentImg: require('@/assets/img/Test/Body_Maps/上肢左外展.png'), // 上肢左外展
+      ulRightAbducentImg: require('@/assets/img/Test/Body_Maps/上肢右外展.png'), // 上肢右外展
+      llAfterLeftOutImg: require('@/assets/img/Test/Body_Maps/下肢左后伸.png'), // 下肢左后伸
+      llAfterRightOutImg: require('@/assets/img/Test/Body_Maps/下肢右后伸.png'), // 下肢右后伸
+      llLeftAbducentImg: require('@/assets/img/Test/Body_Maps/下肢左外展.png'), // 下肢左外展
+      llRightAbducentImg: require('@/assets/img/Test/Body_Maps/下肢右外展.png'), // 下肢右外展
+      llLeftInsideCollectImg: require('@/assets/img/Test/Body_Maps/下肢左内收.png'), // 下肢左内收
+      llRightInsideCollectImg: require('@/assets/img/Test/Body_Maps/下肢右内收.png'), // 下肢右内收
 
       // 测试报告源数据
       testData: {

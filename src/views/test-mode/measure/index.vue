@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-27 16:51:05
- * @LastEditTime: 2022-10-14 17:14:50
+ * @LastEditTime: 2022-10-17 10:58:16
  * @Description : 测试具体测量
 -->
 <template>
@@ -66,7 +66,6 @@
             class="confirm-btn"
             type="success"
             round
-            icon="el-icon-check"
             :disabled="testValueArray.length === 3 ? false : true"
             @click="handleFinish"
             >{{
@@ -128,8 +127,8 @@ export default {
       testName: JSON.parse(this.$route.query.testName),
       chineseName: JSON.parse(this.$route.query.chineseName),
 
-      timeBgSrc: require('@/assets/img/Test/measure/倒计时背景.png'), // 倒计时背景
-      testValueSrc: require('@/assets/img/Test/measure/测量数值背景.png'), // 测量数值背景
+      timeBgSrc: require('@/assets/img/Test/Measure/倒计时背景.png'), // 倒计时背景
+      testValueSrc: require('@/assets/img/Test/Measure/测量数值背景.png'), // 测量数值背景
 
       /* 按钮禁用控制 */
       isStart: false,
