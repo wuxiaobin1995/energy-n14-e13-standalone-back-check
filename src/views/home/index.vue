@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-16 10:42:07
- * @LastEditTime: 2022-09-16 16:04:40
+ * @LastEditTime: 2022-10-19 09:01:25
  * @Description : home
 -->
 <template>
@@ -17,12 +17,6 @@
           fit="scale-down"
           @click.native="handleClick('src2')"
         ></el-image>
-        <el-image
-          class="item item5"
-          :src="src5"
-          fit="scale-down"
-          @click.native="handleClick('src5')"
-        ></el-image>
       </div>
       <div class="two">
         <el-image
@@ -32,10 +26,10 @@
           @click.native="handleClick('src1')"
         ></el-image>
         <el-image
-          class="item item6"
-          :src="src6"
+          class="item item5"
+          :src="src5"
           fit="scale-down"
-          @click.native="handleClick('src6')"
+          @click.native="handleClick('src5')"
         ></el-image>
       </div>
 
@@ -104,7 +98,6 @@ export default {
       src1: require('@/assets/img/Home/用户.png'),
       src2: require('@/assets/img/Home/测试模块.png'),
       src5: require('@/assets/img/Home/数据记录.png'),
-      src6: require('@/assets/img/Home/游戏.png'),
 
       /* 语音相关 */
       switchValue: null,
@@ -171,11 +164,6 @@ export default {
             })
             .catch(() => {})
         }
-      } else if (src === 'src6') {
-        this.$message({
-          message: '提示，该功能仍在开发阶段......',
-          type: 'warning'
-        })
       }
     },
 
@@ -258,10 +246,7 @@ export default {
       margin-top: 80px;
       @include flex(row, center, center);
       .item2 {
-        margin-right: 160px;
-      }
-      .item5 {
-        margin-left: 160px;
+        margin-right: 20px;
       }
     }
     .two {
@@ -270,7 +255,7 @@ export default {
       .item1 {
         margin-right: 380px;
       }
-      .item6 {
+      .item5 {
         margin-left: 380px;
       }
     }
