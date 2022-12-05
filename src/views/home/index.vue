@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-16 10:42:07
- * @LastEditTime: 2022-10-19 09:01:25
+ * @LastEditTime: 2022-11-29 16:21:02
  * @Description : home
 -->
 <template>
@@ -16,6 +16,12 @@
           :src="src2"
           fit="scale-down"
           @click.native="handleClick('src2')"
+        ></el-image>
+        <el-image
+          class="item item3"
+          :src="src3"
+          fit="scale-down"
+          @click.native="handleClick('src3')"
         ></el-image>
       </div>
       <div class="two">
@@ -97,6 +103,7 @@ export default {
       src0: require('@/assets/img/Home/设备实物.png'),
       src1: require('@/assets/img/Home/用户.png'),
       src2: require('@/assets/img/Home/测试模块.png'),
+      src3: require('@/assets/img/Home/训练模块.png'),
       src5: require('@/assets/img/Home/数据记录.png'),
 
       /* 语音相关 */
@@ -121,6 +128,27 @@ export default {
           path: '/user'
         })
       } else if (src === 'src2') {
+        if (this.$store.state.currentUserInfo.userId) {
+          this.dialogVisibleTest = true
+        } else {
+          this.$confirm(
+            `检测到您还没有选择用户，请先到用户页面进行选择！`,
+            '提示',
+            {
+              type: 'warning',
+              center: true,
+              showCancelButton: false,
+              confirmButtonText: '确 定'
+            }
+          )
+            .then(() => {
+              this.$router.push({
+                path: '/user'
+              })
+            })
+            .catch(() => {})
+        }
+      } else if (src === 'src3') {
         if (this.$store.state.currentUserInfo.userId) {
           this.dialogVisibleTest = true
         } else {
@@ -246,7 +274,10 @@ export default {
       margin-top: 80px;
       @include flex(row, center, center);
       .item2 {
-        margin-right: 20px;
+        margin-right: 110px;
+      }
+      .item3 {
+        margin-left: 110px;
       }
     }
     .two {

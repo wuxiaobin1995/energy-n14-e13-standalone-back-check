@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-15 10:08:54
- * @LastEditTime: 2022-09-15 10:10:47
+ * @LastEditTime: 2022-11-29 10:10:45
  * @Description : 顶部栏
 -->
 <template>
@@ -14,7 +14,7 @@
         fit="scale-down"
         @click.native="handleToHome"
       ></el-image>
-      <span class="text">全身等长肌力检测软件-单机版 v2.0.0</span>
+      <span class="text">全身等长肌力测试训练系统-单机版 v2.0.0</span>
     </div>
 
     <!-- 其他 -->

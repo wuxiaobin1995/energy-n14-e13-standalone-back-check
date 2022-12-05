@@ -1,11 +1,11 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:27
- * @LastEditTime: 2022-09-20 10:49:11
+ * @LastEditTime: 2022-11-29 10:10:18
  * @Description : energy-n14-e13-standalone-back-check
 -->
 
-# 全身等长肌力检测软件-单机版
+# 全身等长肌力测试训练系统-单机版
 
 ## 基本设备信息
 
