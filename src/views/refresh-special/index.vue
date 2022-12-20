@@ -1,8 +1,8 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-16 10:42:26
- * @LastEditTime: 2022-09-27 17:21:51
- * @Description : 刷新中转页-测试专用
+ * @LastEditTime: 2022-12-19 09:47:34
+ * @Description : 刷新中转页-测试模块专用
 -->
 <template>
   <div

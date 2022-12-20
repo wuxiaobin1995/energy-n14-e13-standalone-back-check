@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:06
- * @LastEditTime: 2022-10-09 14:50:40
+ * @LastEditTime: 2022-12-20 15:37:40
  * @Description : vuex
  */
 import Vue from 'vue'
@@ -44,7 +44,7 @@ export default new Vuex.Store({
       lastLoginTime: '' // 最后登录时间
     },
 
-    // 测试项目选择
+    // 测试项目选择（多选）
     selectResult: [],
     // 测试最终结果
     resultValue: {
@@ -67,6 +67,9 @@ export default new Vuex.Store({
       llLeftInsideCollect: 0, // 下肢左内收，lower-limb-leftInsideCollect
       llRightInsideCollect: 0 // 下肢右内收，lower-limb-rightInsideCollect
     },
+
+    // 训练部位选择（单选），格式如'cvRearProtraction-颈椎后伸'
+    trainPosition: '',
 
     /* 语音开关 */
     voiceSwitch: true
@@ -91,6 +94,11 @@ export default new Vuex.Store({
     // 测试最终结果
     CHANGE_RESULTVALUE(state, resultValue) {
       state.resultValue = resultValue
+    },
+
+    // 训练部位选择
+    CHANGE_TRAINPOSITION(state, trainPosition) {
+      state.trainPosition = trainPosition
     },
 
     /* 语音开关 */
@@ -128,6 +136,14 @@ export default new Vuex.Store({
     changeResultValue({ commit }, resultValue) {
       return new Promise((resolve, reject) => {
         commit('CHANGE_RESULTVALUE', resultValue)
+        resolve()
+      })
+    },
+
+    // 训练部位选择
+    changeTrainPosition({ commit }, trainPosition) {
+      return new Promise((resolve, reject) => {
+        commit('CHANGE_TRAINPOSITION', trainPosition)
         resolve()
       })
     },

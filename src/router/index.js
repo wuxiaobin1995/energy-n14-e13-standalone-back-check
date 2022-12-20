@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:06
- * @LastEditTime: 2022-12-16 11:55:11
+ * @LastEditTime: 2022-12-20 20:36:37
  * @Description : 路由
  */
 import Vue from 'vue'
@@ -93,21 +93,21 @@ const routes = [
       },
 
       /* 测试模块 */
-      // 测试项目选择
+      // 测试-项目选择
       {
         path: 'test-select',
         name: 'test-select',
         component: () => import('@/views/test-mode/select'),
         meta: ['测试项目选择']
       },
-      // 测试具体测量
+      // 测试-具体测量
       {
         path: 'test-measure',
         name: 'test-measure',
         component: () => import('@/views/test-mode/measure'),
         meta: ['测试具体测量']
       },
-      // 测试项目介绍
+      // 测试-项目介绍
       {
         path: 'cvRearProtraction',
         name: 'cvRearProtraction',
@@ -220,37 +220,237 @@ const routes = [
         meta: ['下肢右内收']
       },
 
+      /* 训练模块 */
+      // 训练-部位选择
+      {
+        path: 'train-position',
+        name: 'test-position',
+        component: () => import('@/views/train-mode/position'),
+        meta: ['训练-部位选择']
+      },
+      // 训练-项目介绍
+      {
+        path: 'train-cvRearProtraction',
+        name: 'train-cvRearProtraction',
+        component: () =>
+          import('@/views/train-mode/introduce/cvRearProtraction'),
+        meta: ['颈椎后伸']
+      },
+      {
+        path: 'train-cvAnteflexion',
+        name: 'train-cvAnteflexion',
+        component: () => import('@/views/train-mode/introduce/cvAnteflexion'),
+        meta: ['颈椎前屈']
+      },
+      {
+        path: 'train-cvRightSide',
+        name: 'train-cvRightSide',
+        component: () => import('@/views/train-mode/introduce/cvRightSide'),
+        meta: ['颈椎右侧屈']
+      },
+      {
+        path: 'train-cvLeftSide',
+        name: 'train-cvLeftSide',
+        component: () => import('@/views/train-mode/introduce/cvLeftSide'),
+        meta: ['颈椎左侧屈']
+      },
+      {
+        path: 'train-tRearProtraction',
+        name: 'train-tRearProtraction',
+        component: () =>
+          import('@/views/train-mode/introduce/tRearProtraction'),
+        meta: ['躯干后伸']
+      },
+      {
+        path: 'train-tAnteflexion',
+        name: 'train-tAnteflexion',
+        component: () => import('@/views/train-mode/introduce/tAnteflexion'),
+        meta: ['躯干前屈']
+      },
+      {
+        path: 'train-tLeftSide',
+        name: 'train-tLeftSide',
+        component: () => import('@/views/train-mode/introduce/tLeftSide'),
+        meta: ['躯干左侧屈']
+      },
+      {
+        path: 'train-tRightSide',
+        name: 'train-tRightSide',
+        component: () => import('@/views/train-mode/introduce/tRightSide'),
+        meta: ['躯干右侧屈']
+      },
+      {
+        path: 'train-ulPush',
+        name: 'train-ulPush',
+        component: () => import('@/views/train-mode/introduce/ulPush'),
+        meta: ['上肢推']
+      },
+      {
+        path: 'train-ulPull',
+        name: 'train-ulPull',
+        component: () => import('@/views/train-mode/introduce/ulPull'),
+        meta: ['上肢拉']
+      },
+      {
+        path: 'train-ulLeftAbducent',
+        name: 'train-ulLeftAbducent',
+        component: () => import('@/views/train-mode/introduce/ulLeftAbducent'),
+        meta: ['上肢左外展']
+      },
+      {
+        path: 'train-ulRightAbducent',
+        name: 'train-ulRightAbducent',
+        component: () => import('@/views/train-mode/introduce/ulRightAbducent'),
+        meta: ['上肢右外展']
+      },
+      {
+        path: 'train-llAfterLeftOut',
+        name: 'train-llAfterLeftOut',
+        component: () => import('@/views/train-mode/introduce/llAfterLeftOut'),
+        meta: ['下肢左后伸']
+      },
+      {
+        path: 'train-llAfterRightOut',
+        name: 'train-llAfterRightOut',
+        component: () => import('@/views/train-mode/introduce/llAfterRightOut'),
+        meta: ['下肢右后伸']
+      },
+      {
+        path: 'train-llLeftAbducent',
+        name: 'train-llLeftAbducent',
+        component: () => import('@/views/train-mode/introduce/llLeftAbducent'),
+        meta: ['下肢左外展']
+      },
+      {
+        path: 'train-llRightAbducent',
+        name: 'train-llRightAbducent',
+        component: () => import('@/views/train-mode/introduce/llRightAbducent'),
+        meta: ['下肢右外展']
+      },
+      {
+        path: 'train-llLeftInsideCollect',
+        name: 'train-llLeftInsideCollect',
+        component: () =>
+          import('@/views/train-mode/introduce/llLeftInsideCollect'),
+        meta: ['下肢左内收']
+      },
+      {
+        path: 'train-llRightInsideCollect',
+        name: 'train-llRightInsideCollect',
+        component: () =>
+          import('@/views/train-mode/introduce/llRightInsideCollect'),
+        meta: ['下肢右内收']
+      },
+      // 训练-类型选择
+      {
+        path: 'train-select',
+        name: 'train-select',
+        component: () => import('@/views/train-mode/select'),
+        meta: ['训练-类型选择'],
+        redirect: '/train-select/feedback-set',
+        children: [
+          // 反馈训练
+          {
+            path: 'feedback-set',
+            name: 'feedback-set',
+            component: () => import('@/views/train-mode/select/feedback'),
+            meta: ['反馈训练']
+          },
+          // 肌耐力训练
+          {
+            path: 'muscular-endurance-set',
+            name: 'muscular-endurance-set',
+            component: () =>
+              import('@/views/train-mode/select/muscular-endurance'),
+            meta: ['肌耐力训练']
+          },
+          // 肌肥大训练
+          {
+            path: 'muscular-hypertrophy-set',
+            name: 'muscular-hypertrophy-set',
+            component: () =>
+              import('@/views/train-mode/select/muscular-hypertrophy'),
+            meta: ['肌肥大训练']
+          }
+        ]
+      },
+      // 训练-具体测量
+      {
+        path: 'train-measure',
+        name: 'train-measure',
+        component: () => import('@/views/train-mode/measure'),
+        meta: ['训练-具体测量']
+      },
+
       /* 数据记录 */
+      // 测试
       {
         path: 'test-record',
         name: 'test-record',
-        component: () => import('@/views/test-record')
+        component: () => import('@/views/record/test'),
+        meta: ['测试-数据记录']
+      },
+
+      // 训练
+      {
+        path: 'train-record',
+        name: 'train-record',
+        component: () => import('@/views/record/train'),
+        meta: ['训练-数据记录'],
+        redirect: '/train-record/feedback',
+        children: [
+          // 反馈训练
+          {
+            path: 'feedback',
+            name: 'feedback',
+            component: () => import('@/views/record/train/feedback'),
+            meta: ['反馈训练']
+          },
+          // 肌耐力训练
+          {
+            path: 'muscular-endurance',
+            name: 'muscular-endurance',
+            component: () => import('@/views/record/train/muscular-endurance'),
+            meta: ['肌耐力训练']
+          },
+          // 肌肥大训练
+          {
+            path: 'muscle-hypertrophy',
+            name: 'muscle-hypertrophy',
+            component: () => import('@/views/record/train/muscle-hypertrophy'),
+            meta: ['肌肥大训练']
+          }
+        ]
       }
     ]
   },
 
-  // 测试报告
+  // 测试报告-打印
   {
     path: '/test-print',
     name: 'test-print',
-    component: () => import('@/views/test-mode/print')
+    component: () => import('@/views/test-mode/print'),
+    meta: ['测试报告-打印']
   },
-  // 长期趋势测试报告
+  // 长期趋势测试报告-打印
   {
     path: '/secular-trend-print',
     name: 'secular-trend-print',
-    component: () => import('@/views/test-mode/secular-trend-print')
+    component: () => import('@/views/test-mode/secular-trend-print'),
+    meta: ['长期趋势测试报告-打印']
   },
 
   {
     path: '/refresh',
     name: 'refresh',
-    component: () => import('@/views/refresh')
+    component: () => import('@/views/refresh'),
+    meta: ['刷新中转页']
   },
   {
     path: '/refresh-special',
     name: 'refresh-special',
-    component: () => import('@/views/refresh-special')
+    component: () => import('@/views/refresh-special'),
+    meta: ['刷新中转页-测试模块专用']
   },
 
   {

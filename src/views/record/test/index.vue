@@ -1,8 +1,8 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-10-14 17:00:22
- * @LastEditTime: 2022-10-15 10:08:10
- * @Description : 数据记录
+ * @LastEditTime: 2022-12-19 09:54:34
+ * @Description : 测试-数据记录
 -->
 <template>
   <div class="test-record">
@@ -385,8 +385,8 @@ export default {
   @include flex(row, center, center);
 
   .wrapper {
-    width: 86%;
-    height: 90%;
+    width: 96%;
+    height: 94%;
     border-radius: 34px;
     background-color: #ffffff;
     box-shadow: 0 0 10px #929292;

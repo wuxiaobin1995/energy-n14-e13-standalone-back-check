@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-06-24 09:29:49
- * @LastEditTime: 2022-10-15 09:49:54
+ * @LastEditTime: 2022-12-19 10:20:19
  * @Description : 用户
 -->
 <template>
@@ -490,8 +490,8 @@ export default {
   @include flex(row, center, center);
 
   .wrapper {
-    width: 86%;
-    height: 90%;
+    width: 96%;
+    height: 94%;
     border-radius: 34px;
     background-color: #ffffff;
     box-shadow: 0 0 10px #929292;
