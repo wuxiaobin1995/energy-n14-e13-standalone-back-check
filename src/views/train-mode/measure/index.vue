@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-12-20 20:37:20
- * @LastEditTime: 2022-12-20 21:35:42
+ * @LastEditTime: 2022-12-23 11:42:35
  * @Description : 训练-具体测量
 -->
 <template>
@@ -18,6 +18,7 @@
             >{{ type }}</el-button
           >
         </div>
+
         <!-- 按钮组 -->
         <div class="btn">
           <el-button
@@ -27,7 +28,7 @@
             @click="handlePdf"
             >查看报告</el-button
           >
-          <el-button class="item" type="danger" @click="handleCancel"
+          <el-button class="item" type="danger" @click="handleGoBack"
             >返回上一页</el-button
           >
           <el-button
@@ -58,6 +59,11 @@
 
       <div class="right">
         <div class="top">
+          <div class="train-name">
+            <div class="title">训练部位</div>
+            <div class="num">{{ trainName.split('-')[1] }}</div>
+          </div>
+
           <div class="result-rate">
             <div class="title">完成度</div>
             <div class="num">{{ resultRate }} %</div>
@@ -67,10 +73,11 @@
             <div class="title">剩余次数</div>
             <div class="num">
               <span class="now-num">{{ nowFrequency }}</span> /
-              {{ frequency * groupCount }}
+              {{ frequency * nowGroupCount }}
             </div>
           </div>
         </div>
+
         <div class="chart">
           <div id="chart" :style="{ width: '100%', height: '100%' }"></div>
         </div>
@@ -86,8 +93,13 @@
         :show-close="false"
         :center="true"
       >
-        <div class="dialog-value">
-          {{ nowIntervalTime }}
+        <div class="dialog">
+          <div class="dialog-value">
+            {{ nowIntervalTime }}
+          </div>
+          <el-button class="dialog-btn" type="warning" @click="handlePass"
+            >跳 过</el-button
+          >
         </div>
       </el-dialog>
     </div>
@@ -116,6 +128,7 @@ export default {
       keepdRate: JSON.parse(this.$route.query.keepdRate), // 等长比
       offcenterRate: JSON.parse(this.$route.query.offcenterRate), // 离心比
       type: JSON.parse(this.$route.query.type), // 训练类型
+      trainName: JSON.parse(this.$route.query.trainName), // 训练部位，格式如'cvRearProtraction-颈椎后伸'
       routerName: JSON.parse(this.$route.query.routerName), // 上一个的路由地址
 
       /* 串口相关变量 */
@@ -129,34 +142,54 @@ export default {
       xData: [], // 横坐标数组
 
       /* 控制相关 */
-      startAllow: true, // 开始按钮的禁用与否
       scShow: true, // 暂停、继续按钮的显隐
+      startAllow: true, // 开始按钮的禁用与否
       pdfAllow: false, // 查看PDF按钮的禁用与否
 
       /* 其他 */
-      leftK: 0, // 左K
-      rightK: 0, // 右K
-      leftStandard: 0, // 左调零值
-      rightStandard: 0, // 右调零值
-      rightWeight: 0, // 右负重（kg），精确到0.1kg
-      leftWeightArray: [], // 左负重数组
-      rightWeightArray: [], // 右负重数组
-      leftWeightAverage: 0, // 左负重平均值（kg），精确到0.1kg
-      rightWeightAverage: 0, // 右负重平均值（kg），精确到0.1kg
-      distanceDataOneArray: [], // 单个的位移数组，用于计算次数
-      distanceDataShowArray: [], // 展示的位移数组
-      distanceDataArray: [], // 完整的位移数组
-      nowIntervalTime: 0, // 目前的组间隔时间
-      nowFrequency: 0, // 目前的单组重复次数
+      oneK: 0, // P1的K
+      twoK: 0, // P2的K
+      oneStandard: 0, // P1调零值
+      twoStandard: 0, // P2调零值
+      oneWeight: 0, // P1负重（kg），精确到0.01kg
+      twoWeight: 0, // P2负重（kg），精确到0.01kg
+
+      useP1: [
+        'cvRearProtraction',
+        'cvAnteflexion',
+        'cvRightSide',
+        'cvLeftSide',
+        'tRearProtraction',
+        'ulPush',
+        'ulPull'
+      ], // 使用P1的训练项目
+      useP2: [
+        'tAnteflexion',
+        'tLeftSide',
+        'tRightSide',
+        'ulLeftAbducent',
+        'ulRightAbducent',
+        'llAfterLeftOut',
+        'llAfterRightOut',
+        'llLeftAbducent',
+        'llRightAbducent',
+        'llLeftInsideCollect',
+        'llRightInsideCollect'
+      ], // 使用P2的训练项目
+
+      weightDataOneArray: [], // 单个的压力数组，用于计算次数
+      weightDataShowArray: [], // 展示的压力数组
+      weightDataArray: [], // 完整的压力数组
       pdfTime: null, // 该次训练完成时间
       resultRate: 0, // 最终完成比例
-      time: 1, // 间隔时间（s）
 
-      maxDistance: this.$store.state.currentUserInfo.maxDistance, // 人的最大位移（mm）
-      original: 0, // 起始位置（mm）
+      nowIntervalTime: 0, // 目前的组间隔时间
+      nowFrequency: 0, // 目前的单组重复次数
+      nowGroupCount: JSON.parse(this.$route.query.groupCount), // 目前的组数
+      original: 2, // 起始位置（kg），暂定2kg
 
-      timeClock: null, // 计时器
       dialogVisible: false, // 休息倒计时弹窗
+      timeClock: null, // 计时器
 
       /* 参考曲线 */
       standardGraph: [], // 单个基准图形
@@ -165,19 +198,16 @@ export default {
   },
 
   created() {
-    this.leftK = parseFloat(window.localStorage.getItem('leftK'))
-    this.rightK = parseFloat(window.localStorage.getItem('rightK'))
-    this.leftStandard = this.$store.state.zeroStandard.leftStandard
-    this.rightStandard = this.$store.state.zeroStandard.rightStandard
-    this.original = parseInt((this.maxDistance * 0.1).toFixed(0))
+    this.oneK = parseFloat(window.localStorage.getItem('oneK'))
+    this.twoK = parseFloat(window.localStorage.getItem('twoK'))
+    this.oneStandard = this.$store.state.zeroStandard.oneStandard
+    this.twoStandard = this.$store.state.zeroStandard.twoStandard
 
     this.initSerialPort()
   },
 
   mounted() {
     this.initChart()
-    // 监听父容器的宽高变化，目的是实现echarts图形自适应父容器的宽高变化
-    window.addEventListener('resize', this.resizeCharts)
   },
   beforeDestroy() {
     // 清除计时器
@@ -190,8 +220,6 @@ export default {
         this.usbPort.close()
       }
     }
-    // 注销echarts图形自适应监听事件
-    window.removeEventListener('resize', this.resizeCharts)
   },
 
   methods: {
@@ -234,7 +262,7 @@ export default {
                   center: true,
                   confirmButtonText: '返回上一页',
                   callback: () => {
-                    this.handleCancel()
+                    this.handleGoBack()
                   }
                 }
               )
@@ -246,219 +274,137 @@ export default {
 
               const dataArray = data.split(',') // 将原始数据以逗号作为分割符，组成一个数组
               const weightDigital = dataArray[0] // 负重数字量，比如00327640032720
-              const distancePulse = dataArray[1] // 位移脉冲量
+              // const distancePulse = dataArray[1] // 位移脉冲量
 
               /* 暂停或继续按钮 */
               if (this.scShow) {
-                /* 计算左负重、右负重，精确到0.1kg */
-                this.leftWeight = parseFloat(
+                /* 计算P1、P2负重，精确到0.1kg */
+                this.oneWeight = parseFloat(
                   (
-                    (parseInt(weightDigital.slice(2, 7)) - this.leftStandard) /
-                    -this.leftK
+                    (parseInt(weightDigital.slice(2, 7)) - this.oneStandard) /
+                    -this.oneK
                   ).toFixed(1)
                 )
-                this.rightWeight = parseFloat(
+                this.twoWeight = parseFloat(
                   (
-                    (parseInt(weightDigital.slice(9, 14)) -
-                      this.rightStandard) /
-                    -this.rightK
+                    (parseInt(weightDigital.slice(9, 14)) - this.twoStandard) /
+                    -this.twoK
                   ).toFixed(1)
                 )
-                if (this.leftWeight < 0) {
-                  this.leftWeight = 0
+                if (this.oneWeight < 0) {
+                  this.oneWeight = 0
                 }
-                if (this.rightWeight < 0) {
-                  this.rightWeight = 0
+                if (this.twoWeight < 0) {
+                  this.twoWeight = 0
                 }
                 /* 数据校验 */
-                if (!isNaN(this.leftWeight) && !isNaN(this.rightWeight)) {
-                  /* 数据插入数组中 */
-                  this.leftWeightArray.push(this.leftWeight)
-                  this.rightWeightArray.push(this.rightWeight)
-                }
+                if (!isNaN(this.oneWeight) && !isNaN(this.twoWeight)) {
+                  /* 过滤掉突变值 */
+                  if (this.oneWeight <= 200 && this.twoWeight <= 200) {
+                    /* 数据插入数组中 */
+                    let weight = 0
+                    if (this.useP1.includes(this.trainName.split('-')[0])) {
+                      // 使用P1
+                      weight = this.oneWeight
+                    } else if (
+                      this.useP2.includes(this.trainName.split('-')[0])
+                    ) {
+                      // 使用P2
+                      weight = this.twoWeight
+                    }
+                    this.weightDataOneArray.push(weight) // 单个的压力数组，用于计算次数
+                    this.weightDataShowArray.push(weight) // 展示的压力数组
+                    this.weightDataArray.push(weight) // 完整的压力数组
 
-                /* 计算拉绳位移值，有正负，精确到1mm */
-                const distance = parseFloat(
-                  (parseInt(distancePulse) * 1).toFixed(0)
-                )
-                const relativeDistance = parseInt(
-                  (distance - this.standardDistance).toFixed(0)
-                )
-                /* 数据校验 */
-                if (!isNaN(relativeDistance)) {
-                  /* 数据插入数组中 */
-                  this.distanceDataOneArray.push(relativeDistance) // 单个的位移数组，用于计算次数
-                  this.distanceDataShowArray.push(relativeDistance) // 展示的位移数组
-                  this.distanceDataArray.push(relativeDistance) // 完整的位移数组
-                  this.option.series[0].data = this.distanceDataShowArray
-                  this.myChart.setOption(this.option)
+                    /* 渲染图形 */
+                    this.option.series[0].data = this.weightDataShowArray
+                    this.myChart.setOption(this.option)
 
-                  /* 实时递增次数 */
-                  if (
-                    this.distanceDataOneArray.length ===
-                    this.standardGraph.length
-                  ) {
-                    this.distanceDataOneArray = []
-                    this.nowFrequency += 1
-                  }
+                    /* 实时递增次数 */
+                    if (
+                      this.weightDataOneArray.length ===
+                      this.standardGraph.length
+                    ) {
+                      this.weightDataOneArray = []
+                      this.nowFrequency += 1
+                    }
 
-                  /* 曲线走到终点重新开始 */
-                  if (
-                    this.distanceDataShowArray.length ===
-                    this.referenceGraph.length
-                  ) {
-                    this.distanceDataShowArray = []
-                  }
+                    /* 曲线走到终点重新开始 */
+                    if (
+                      this.weightDataShowArray.length ===
+                      this.referenceGraph.length
+                    ) {
+                      this.weightDataShowArray = []
+                    }
 
-                  /* 完成一组 */
-                  if (this.nowFrequency === this.frequency) {
-                    this.handleStop()
+                    /* 完成一组 */
+                    if (this.nowFrequency === this.frequency) {
+                      this.handleStop()
 
-                    this.groupCount -= 1
+                      this.nowGroupCount -= 1
 
-                    if (this.groupCount > 0) {
-                      this.nowIntervalTime = this.intervalTime
-                      this.dialogVisible = true
-                      this.timeClock = setInterval(() => {
-                        this.nowIntervalTime -= 1
-                        if (this.nowIntervalTime === 0) {
+                      // 弹出休息倒计时窗口
+                      if (this.nowGroupCount > 0) {
+                        this.nowIntervalTime = this.intervalTime
+                        this.dialogVisible = true
+                        this.timeClock = setInterval(() => {
+                          this.nowIntervalTime -= 1
+                          if (this.nowIntervalTime === 0) {
+                            /* 清除定时器 */
+                            if (this.timeClock) {
+                              clearInterval(this.timeClock)
+                            }
+                            this.nowFrequency = 0
+                            this.dialogVisible = false
+                            this.handleContinue()
+                          }
+                        }, 1000)
+                      }
+                    }
+
+                    /* 该次训练全部完成 */
+                    if (this.nowGroupCount === 0) {
+                      if (this.usbPort) {
+                        if (this.usbPort.isOpen) {
+                          /* 关闭串口通信 */
+                          this.usbPort.close()
                           /* 清除定时器 */
                           if (this.timeClock) {
                             clearInterval(this.timeClock)
                           }
-                          this.nowFrequency = 0
-                          this.dialogVisible = false
-                          this.handleContinue()
-                        }
-                      }, 1000)
-                    }
-                  }
-
-                  /* 该次训练全部完成 */
-                  if (this.groupCount === 0) {
-                    if (this.usbPort) {
-                      if (this.usbPort.isOpen) {
-                        /* 关闭串口通信 */
-                        this.usbPort.close()
-                        /* 清除定时器 */
-                        if (this.timeClock) {
-                          clearInterval(this.timeClock)
-                        }
-                        /* 计算完成度 */
-                        const matchArray = [] // 参考曲线数组
-                        const yesArray = [] // 达标数据数组
-                        for (let i = 0; i < this.nowFrequency; i++) {
-                          matchArray.push(...this.standardGraph)
-                        }
-                        for (let i = 0; i < matchArray.length; i++) {
-                          const relative = Math.abs(
-                            this.distanceDataArray[i] - matchArray[i]
-                          )
-                          if (relative <= this.original) {
-                            yesArray.push(relative)
+                          /* 计算完成度 */
+                          const matchArray = [] // 参考曲线数组
+                          const yesArray = [] // 达标数据数组
+                          for (let i = 0; i < this.nowFrequency; i++) {
+                            matchArray.push(...this.standardGraph)
                           }
-                        }
-                        this.resultRate = parseFloat(
-                          ((yesArray.length / matchArray.length) * 100).toFixed(
-                            1
-                          )
-                        )
-                        this.startAllow = true
-                        /* 验证一下结果正确性 */
-                        if (this.resultRate) {
-                          /* 计算左、右负重平均值 */
-                          if (this.leftWeightArray.length) {
-                            let leftSum = 0
-                            for (
-                              let i = 0;
-                              i < this.leftWeightArray.length;
-                              i++
-                            ) {
-                              leftSum += this.leftWeightArray[i]
-                            }
-                            this.leftWeightAverage = parseFloat(
-                              (leftSum / this.leftWeightArray.length).toFixed(1)
+                          for (let i = 0; i < matchArray.length; i++) {
+                            const relative = Math.abs(
+                              this.weightDataArray[i] - matchArray[i]
                             )
-                          } else {
-                            this.leftWeightAverage = 0
-                          }
-                          if (this.rightWeightArray.length) {
-                            let rightSum = 0
-                            for (
-                              let i = 0;
-                              i < this.rightWeightArray.length;
-                              i++
-                            ) {
-                              rightSum += this.rightWeightArray[i]
+                            // 暂定单边2kg范围
+                            if (relative <= 2) {
+                              yesArray.push(relative)
                             }
-                            this.rightWeightAverage = parseFloat(
-                              (rightSum / this.rightWeightArray.length).toFixed(
-                                1
-                              )
-                            )
-                          } else {
-                            this.rightWeightAverage = 0
                           }
-
-                          /* 保存到数据库 */
-                          this.pdfTime = this.$moment().format(
-                            'YYYY-MM-DD HH:mm:ss'
+                          this.resultRate = parseFloat(
+                            (
+                              (yesArray.length / matchArray.length) *
+                              100
+                            ).toFixed(1)
                           )
-                          const db = initDB()
-                          db.mtt_data
-                            .add({
-                              userId: this.$store.state.currentUserInfo.userId,
-                              userName:
-                                this.$store.state.currentUserInfo.userName,
-                              sex: this.$store.state.currentUserInfo.sex,
-                              affectedSide:
-                                this.$store.state.currentUserInfo.affectedSide,
-                              height: this.$store.state.currentUserInfo.height,
-                              weight: this.$store.state.currentUserInfo.weight,
-                              birthday:
-                                this.$store.state.currentUserInfo.birthday,
-                              maxDistance:
-                                this.$store.state.currentUserInfo.maxDistance,
-                              type: this.type,
-                              target: this.target,
-                              frequency: this.frequency,
-                              groupCount: this.groupCount,
-                              intervalTime: this.intervalTime,
-                              resultRate: this.resultRate,
-                              leftWeightArray: this.leftWeightArray,
-                              rightWeightArray: this.rightWeightArray,
-                              leftWeightAverage: this.leftWeightAverage,
-                              rightWeightAverage: this.rightWeightAverage,
-                              pdfTime: this.pdfTime
+                          this.startAllow = true
+
+                          /* 验证一下结果正确性 */
+                          if (this.resultRate) {
+                            /* 保存到数据库 */
+                            this.saveData()
+                          } else {
+                            this.$message({
+                              message: `完成比例为${this.resultRate}，数值不正常，请点击"开始训练"按钮重新训练`,
+                              type: 'error'
                             })
-                            .then(() => {
-                              this.$message({
-                                message: '数据保存成功',
-                                type: 'success',
-                                duration: 2000
-                              })
-                              this.pdfAllow = true
-                            })
-                            .catch(() => {
-                              this.$alert(
-                                `请重新连接USB线，然后点击"返回上一页"按钮，重新训练！`,
-                                '数据保存失败',
-                                {
-                                  type: 'error',
-                                  showClose: false,
-                                  center: true,
-                                  confirmButtonText: '返回上一页',
-                                  callback: () => {
-                                    this.handleCancel()
-                                  }
-                                }
-                              )
-                            })
-                        } else {
-                          this.$message({
-                            message: `完成比例为${this.resultRate}，数值不正常，请点击"开始训练"按钮重新测试`,
-                            type: 'error'
-                          })
+                          }
                         }
                       }
                     }
@@ -477,7 +423,7 @@ export default {
                 center: true,
                 confirmButtonText: '返回上一页',
                 callback: () => {
-                  this.handleCancel()
+                  this.handleGoBack()
                 }
               }
             )
@@ -494,7 +440,7 @@ export default {
               center: true,
               confirmButtonText: '返回上一页',
               callback: () => {
-                this.handleCancel()
+                this.handleGoBack()
               }
             }
           )
@@ -507,28 +453,27 @@ export default {
     initChart() {
       /* 计算最终参考图形 */
       // 开始段
-      for (let i = 0; i <= parseInt((this.time * 5).toFixed(0)); i++) {
+      for (let i = 0; i <= 5; i++) {
         this.standardGraph.push(this.original)
       }
       // 中间段，这里的15目前是固定的，后续可能会改其他值
-      const intervalUp =
-        (this.maxDistance - this.original) / (this.entadRate * 15) // 上升间隔值
+      const intervalUp = (this.target - this.original) / (this.entadRate * 15) // 上升间隔值
       const intervalDown =
-        (this.maxDistance - this.original) / (this.offcenterRate * 15) // 下降间隔值
+        (this.target - this.original) / (this.offcenterRate * 15) // 下降间隔值
       let sum = this.original
       for (let i = 0; i < this.entadRate * 15; i++) {
-        sum = parseFloat((sum + intervalUp).toFixed(1))
+        sum = parseFloat(sum + intervalUp)
         this.standardGraph.push(sum)
       }
       for (let i = 0; i < this.keepdRate * 15; i++) {
         this.standardGraph.push(sum)
       }
       for (let i = 0; i < this.offcenterRate * 15 - 1; i++) {
-        sum = parseFloat((sum - intervalDown).toFixed(1))
+        sum = parseFloat(sum - intervalDown)
         this.standardGraph.push(sum)
       }
       // 结束段
-      for (let i = 0; i < parseInt((this.time * 5).toFixed(0)); i++) {
+      for (let i = 0; i < 5; i++) {
         this.standardGraph.push(this.original)
       }
       // 最终复制3个
@@ -546,7 +491,7 @@ export default {
       this.option = {
         xAxis: {
           type: 'category',
-          name: '单位：秒',
+          name: '秒',
           data: this.xData,
           axisTick: {
             alignWithLabel: true
@@ -554,7 +499,7 @@ export default {
         },
         yAxis: {
           type: 'value',
-          name: '单位：mm',
+          name: '单位：kg',
           min: 0
         },
         tooltip: {},
@@ -587,29 +532,71 @@ export default {
     },
 
     /**
-     * @description: 重新刷新画布（即重新获取父容器宽高），目的是实现echarts图形自适应父容器的宽高变化
+     * @description: 保存数据函数
      */
-    resizeCharts() {
-      if (this.myChart) {
-        this.myChart.resize()
-      }
+    saveData() {
+      this.pdfTime = this.$moment().format('YYYY-MM-DD HH:mm:ss')
+      const db = initDB()
+      db.train_data
+        .add({
+          userId: this.$store.state.currentUserInfo.userId,
+          userName: this.$store.state.currentUserInfo.userName,
+          sex: this.$store.state.currentUserInfo.sex,
+          height: this.$store.state.currentUserInfo.height,
+          weight: this.$store.state.currentUserInfo.weight,
+          birthday: this.$store.state.currentUserInfo.birthday,
+
+          frequency: this.frequency,
+          groupCount: this.groupCount,
+          intervalTime: this.intervalTime,
+          target: this.target,
+          entadRate: this.entadRate,
+          keepdRate: this.keepdRate,
+          offcenterRate: this.offcenterRate,
+          trainName: this.trainName,
+          type: this.type,
+
+          pdfTime: this.pdfTime,
+          standardGraph: this.standardGraph,
+          weightDataArray: this.weightDataArray,
+          resultRate: this.resultRate
+        })
+        .then(() => {
+          this.$message({
+            message: '数据保存成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.pdfAllow = true
+        })
+        .catch(() => {
+          this.$alert(`请点击"返回上一页"按钮，重新训练！`, '数据保存失败', {
+            type: 'error',
+            showClose: false,
+            center: true,
+            confirmButtonText: '返回上一页',
+            callback: () => {
+              this.handleGoBack()
+            }
+          })
+          this.pdfAllow = false
+        })
     },
 
     /**
      * @description: 开始按钮
      */
     handleStart() {
+      this.scShow = true
       this.startAllow = false
       this.pdfAllow = false
 
-      this.distanceDataOneArray = []
-      this.distanceDataShowArray = []
-      this.distanceDataArray = []
-      this.leftWeightArray = []
-      this.rightWeightArray = []
-      this.leftWeightAverage = 0
-      this.rightWeightAverage = 0
+      this.weightDataOneArray = []
+      this.weightDataShowArray = []
+      this.weightDataArray = []
+
       this.nowFrequency = 0
+      this.nowGroupCount = this.groupCount
       this.pdfTime = null
       this.resultRate = 0
 
@@ -635,11 +622,25 @@ export default {
     },
 
     /**
+     * @description: 跳过休息时间
+     */
+    handlePass() {
+      /* 清除定时器 */
+      if (this.timeClock) {
+        clearInterval(this.timeClock)
+      }
+      this.nowIntervalTime === 0
+      this.nowFrequency = 0
+      this.dialogVisible = false
+      this.handleContinue()
+    },
+
+    /**
      * @description: 查看PDF按钮
      */
     handlePdf() {
       this.$router.push({
-        path: '/train-print',
+        path: '/train-pdf',
         query: {
           userId: JSON.stringify(this.$store.state.currentUserInfo.userId),
           pdfTime: JSON.stringify(this.pdfTime),
@@ -651,7 +652,7 @@ export default {
     /**
      * @description: 返回上一页
      */
-    handleCancel() {
+    handleGoBack() {
       this.$router.push({
         path: this.routerName
       })
@@ -710,6 +711,19 @@ export default {
         border-radius: 16px;
         @include flex(row, space-around, center);
         padding-bottom: 5px;
+        .train-name {
+          @include flex(column, center, center);
+          .title {
+            font-size: 22px;
+            margin-bottom: 5px;
+          }
+          .num {
+            background-color: rgba(155, 155, 155, 0.6);
+            border-radius: 4px;
+            padding: 2px 10px;
+            font-size: 18px;
+          }
+        }
         .result-rate {
           @include flex(column, center, center);
           .title {
@@ -745,20 +759,27 @@ export default {
       }
     }
 
-    .dialog-value {
-      @include flex(row, center, center);
-      height: 130px;
-      font-size: 60px;
-      color: #ffffff;
-      border-radius: 9px;
-      background: linear-gradient(
-        180deg,
-        #2d809e 0%,
-        #2d809e 0%,
-        #2aa06d 100%,
-        #2aa06d 100%
-      );
-      box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+    .dialog {
+      @include flex(column, stretch, stretch);
+      .dialog-value {
+        @include flex(row, center, center);
+        height: 130px;
+        font-size: 60px;
+        color: #ffffff;
+        border-radius: 9px;
+        background: linear-gradient(
+          180deg,
+          #2d809e 0%,
+          #2d809e 0%,
+          #2aa06d 100%,
+          #2aa06d 100%
+        );
+        box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+      }
+      .dialog-btn {
+        margin-top: 20px;
+        font-size: 24px;
+      }
     }
   }
 }

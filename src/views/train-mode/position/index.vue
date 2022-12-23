@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-12-19 17:56:27
- * @LastEditTime: 2022-12-20 15:35:17
+ * @LastEditTime: 2022-12-21 09:57:22
  * @Description : 训练-部位选择
 -->
 <template>
@@ -90,7 +90,7 @@
 
       <div class="btn">
         <el-button class="item" type="primary" @click="handleTrain"
-          >开始训练</el-button
+          >确 认</el-button
         >
         <el-button class="item" type="danger" @click="handleToHome"
           >返回首页</el-button

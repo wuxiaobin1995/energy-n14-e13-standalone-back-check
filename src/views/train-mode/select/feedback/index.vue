@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-12-19 10:00:41
- * @LastEditTime: 2022-12-20 21:34:11
+ * @LastEditTime: 2022-12-22 11:23:05
  * @Description : 反馈训练-参数设置
 -->
 <template>
@@ -9,6 +9,7 @@
     <div class="left">
       <!-- 介绍说明 -->
       <div class="introduce">
+        <div class="item">训练部位：{{ trainPosition.split('-')[1] }}</div>
         <div class="item">
           训练推荐：最大力量的10%，重复10次，训练3组，每组休息30秒。
         </div>
@@ -40,7 +41,7 @@
           ></el-input-number>
         </div>
         <div class="set-item item3">
-          <span>组间隔时长：</span>
+          <span>组间隔时长(s)：</span>
           <el-input-number
             v-model="intervalTime"
             :min="10"
@@ -52,8 +53,8 @@
           <span>训练目标(kg)：</span>
           <el-input-number
             v-model="target"
-            :min="1"
-            :max="500"
+            :min="10"
+            :max="1000"
             :precision="0"
           ></el-input-number>
         </div>
@@ -111,17 +112,75 @@ export default {
       imgSrc: require('@/assets/img/Train/Set/通用示例图.png'),
       setBgSrc: require('@/assets/img/Train/Set/参数设置背景.png'),
 
+      trainPosition: this.$store.state.trainPosition, // 训练部位，格式如'cvRearProtraction-颈椎后伸'
+
       frequency: 10, // 单组重复次数（1~30）
       groupCount: 3, // 组数（1~10）
       intervalTime: 30, // 组间隔时长（10~120）（秒）（即休息时长）
-      target: 10, // 训练目标（kg）
+      target: 10, // 训练目标（kg）（训练目标不能低于10kg）
       entadRate: 2, // 向心比（1~10）
       keepdRate: 0, // 等长比（0~10）
       offcenterRate: 2 // 离心比（1~10）
     }
   },
 
+  created() {
+    this.getTargetData()
+  },
+
   methods: {
+    /**
+     * @description: 获取推荐训练目标函数
+     */
+    getTargetData() {
+      const db = initDB()
+      db.test_data
+        .where({
+          userId: this.$store.state.currentUserInfo.userId
+        })
+        .toArray()
+        .then(res => {
+          const len = res.length
+          const trainPositionEn = this.trainPosition.split('-')[0]
+          if (len) {
+            if (res[len - 1].resultValue[trainPositionEn]) {
+              this.target = parseInt(
+                (res[len - 1].resultValue[trainPositionEn] * 0.1).toFixed(0)
+              )
+              // 训练目标不能低于10kg
+              if (this.target < 10) {
+                this.target = 10
+              }
+            } else {
+              this.target = 10
+            }
+          } else {
+            this.target = 10
+          }
+        })
+        .catch(err => {
+          this.$confirm(
+            `获取推荐训练目标值失败，点击"重试"或"使用默认值"！`,
+            '提示',
+            {
+              type: 'warning',
+              center: true,
+              showClose: false,
+              closeOnClickModal: false,
+              closeOnPressEscape: false,
+              confirmButtonText: '重 试',
+              cancelButtonText: '使用默认值(10kg)'
+            }
+          )
+            .then(() => {
+              this.getTargetData()
+            })
+            .catch(() => {
+              this.target = 10
+            })
+        })
+    },
+
     /**
      * @description: 开始训练
      */
@@ -137,6 +196,7 @@ export default {
           keepdRate: JSON.stringify(this.keepdRate),
           offcenterRate: JSON.stringify(this.offcenterRate),
           type: JSON.stringify('反馈训练'),
+          trainName: JSON.stringify(this.trainPosition),
           routerName: JSON.stringify('/train-select/feedback-set')
         }
       })

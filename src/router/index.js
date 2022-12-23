@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:06
- * @LastEditTime: 2022-12-20 20:36:37
+ * @LastEditTime: 2022-12-23 15:27:49
  * @Description : 路由
  */
 import Vue from 'vue'
@@ -397,26 +397,26 @@ const routes = [
         name: 'train-record',
         component: () => import('@/views/record/train'),
         meta: ['训练-数据记录'],
-        redirect: '/train-record/feedback',
+        redirect: '/train-record/feedback-record',
         children: [
           // 反馈训练
           {
-            path: 'feedback',
-            name: 'feedback',
+            path: 'feedback-record',
+            name: 'feedback-record',
             component: () => import('@/views/record/train/feedback'),
             meta: ['反馈训练']
           },
           // 肌耐力训练
           {
-            path: 'muscular-endurance',
-            name: 'muscular-endurance',
+            path: 'muscular-endurance-record',
+            name: 'muscular-endurance-record',
             component: () => import('@/views/record/train/muscular-endurance'),
             meta: ['肌耐力训练']
           },
           // 肌肥大训练
           {
-            path: 'muscle-hypertrophy',
-            name: 'muscle-hypertrophy',
+            path: 'muscle-hypertrophy-record',
+            name: 'muscle-hypertrophy-record',
             component: () => import('@/views/record/train/muscle-hypertrophy'),
             meta: ['肌肥大训练']
           }
@@ -425,6 +425,7 @@ const routes = [
     ]
   },
 
+  /* 测试报告 */
   // 测试报告-打印
   {
     path: '/test-print',
@@ -438,6 +439,15 @@ const routes = [
     name: 'secular-trend-print',
     component: () => import('@/views/test-mode/secular-trend-print'),
     meta: ['长期趋势测试报告-打印']
+  },
+
+  /* 训练报告 */
+  // 训练报告-导出PDF
+  {
+    path: '/train-pdf',
+    name: 'train-pdf',
+    component: () => import('@/views/train-mode/pdf'),
+    meta: ['训练-导出PDF']
   },
 
   {

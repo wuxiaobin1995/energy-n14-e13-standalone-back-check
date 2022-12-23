@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-12-19 09:45:12
- * @LastEditTime: 2022-12-19 10:23:01
+ * @LastEditTime: 2022-12-23 15:28:04
  * @Description : 训练-数据记录
 -->
 <template>
@@ -52,21 +52,21 @@ export default {
      * @description: 反馈训练
      */
     handleFeedback() {
-      this.$router.push({ path: '/train-record/feedback' })
+      this.$router.push({ path: '/train-record/feedback-record' })
     },
 
     /**
      * @description: 肌耐力训练
      */
     handleMuscularEndurance() {
-      this.$router.push({ path: '/train-record/muscular-endurance' })
+      this.$router.push({ path: '/train-record/muscular-endurance-record' })
     },
 
     /**
      * @description: 肌肥大训练
      */
     handleMuscleHypertrophy() {
-      this.$router.push({ path: '/train-record/muscle-hypertrophy' })
+      this.$router.push({ path: '/train-record/muscle-hypertrophy-record' })
     }
   }
 }

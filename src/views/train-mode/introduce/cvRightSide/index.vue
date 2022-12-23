@@ -1,7 +1,7 @@
 <!--
  * @Author      : 吴晓斌
  * @Date        : 2021-05-30 12:07:39
- * @LastEditTime: 2022-12-20 14:23:18
+ * @LastEditTime: 2022-12-21 10:34:55
  * @Description : 颈椎右侧屈-介绍页
 -->
 <template>
@@ -36,7 +36,7 @@
             icon="el-icon-caret-right"
             class="item"
             @click="handleTrain"
-            >开始训练</el-button
+            >确 定</el-button
           >
         </div>
       </div>
@@ -70,7 +70,7 @@ export default {
 
   methods: {
     /**
-     * @description: 开始训练
+     * @description: 确 定
      */
     handleTrain() {
       this.$router.push({

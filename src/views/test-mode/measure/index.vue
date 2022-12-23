@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-27 16:51:05
- * @LastEditTime: 2022-10-17 10:58:16
+ * @LastEditTime: 2022-12-21 17:20:00
  * @Description : 测试具体测量
 -->
 <template>
@@ -274,7 +274,7 @@ export default {
 
             this.parser = this.usbPort.pipe(new Readline({ delimiter: '\n' }))
             this.parser.on('data', data => {
-              // console.log(data) // {String} 00326740032826
+              // console.log(data) // {String} 00326740032826,125
 
               /* 计算P1、P2负重 */
               this.oneWeight = parseFloat(

@@ -1,7 +1,7 @@
 <!--
  * @Author      : 吴晓斌
  * @Date        : 2021-05-30 12:07:39
- * @LastEditTime: 2022-12-20 14:28:38
+ * @LastEditTime: 2022-12-21 10:35:20
  * @Description : 躯干后伸-介绍页
 -->
 <template>
@@ -38,7 +38,7 @@
             icon="el-icon-caret-right"
             class="item"
             @click="handleTrain"
-            >开始训练</el-button
+            >确 定</el-button
           >
         </div>
       </div>
@@ -72,7 +72,7 @@ export default {
 
   methods: {
     /**
-     * @description: 开始训练
+     * @description: 确 定
      */
     handleTrain() {
       this.$router.push({
