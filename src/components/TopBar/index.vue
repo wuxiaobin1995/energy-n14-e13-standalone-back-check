@@ -15,6 +15,7 @@
         @click.native="handleToHome"
       ></el-image>
       <span class="text">全身等长肌力测试训练系统-单机版 v2.0.0</span>
+      <!-- <span class="text">全身等长肌力测试训练系统-单机版</span> -->
     </div>
 
     <!-- 其他 -->
