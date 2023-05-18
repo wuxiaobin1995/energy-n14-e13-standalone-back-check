@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-06-24 09:29:49
- * @LastEditTime: 2022-12-19 10:20:19
+ * @LastEditTime: 2023-05-17 15:28:01
  * @Description : 用户
 -->
 <template>
@@ -422,7 +422,7 @@ export default {
               header: tHeader, // 表头 必填
               data: exportData, // 具体数据 必填
               filename:
-                '全身等长肌力检测软件-单机版-所有用户信息 ' +
+                '全身等长肌力测试训练系统-单机版-所有用户信息 ' +
                 this.$moment().format('YYYY-MM-DD HH_mm_ss'), // 导出文件名，非必填
               autoWidth: true, // 自适应列宽，非必填
               bookType: 'xlsx' // 导出格式，非必填
