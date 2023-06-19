@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:06
- * @LastEditTime: 2022-09-17 10:26:56
+ * @LastEditTime: 2023-06-19 09:36:45
  * @Description : 根组件
 -->
 <template>
@@ -115,7 +115,7 @@ export default {
 
               const dataArray = data.split(',') // 将原始数据以逗号作为分割符，组成一个数组
               const weightDigital = dataArray[0] // 负重数字量，比如00327640032720
-              // const distancePulse = dataArray[1] // 位移脉冲量，需要乘2才是mm值
+              // const distancePulse = dataArray[1] // 位移脉冲量
 
               this.oneStandard = parseInt(weightDigital.slice(2, 7))
               this.twoStandard = parseInt(weightDigital.slice(9, 14))
