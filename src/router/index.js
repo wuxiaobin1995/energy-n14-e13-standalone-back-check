@@ -42,6 +42,13 @@ const routes = [
         component: () => import('@/views/user'),
         meta: ['用户']
       },
+      // 导出所选用户的数据（测试、训练、......）
+      {
+        path: 'user-data-output',
+        name: 'user-data-output',
+        component: () => import('@/views/user-data-output'),
+        meta: ['导出所选用户的数据']
+      },
       // 添加用户
       {
         path: 'user-add',
