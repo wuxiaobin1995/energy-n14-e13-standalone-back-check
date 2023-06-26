@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:39:06
- * @LastEditTime: 2023-06-19 09:36:45
+ * @LastEditTime: 2023-06-26 10:29:36
  * @Description : 根组件
 -->
 <template>
@@ -32,19 +32,7 @@ export default {
   },
 
   created() {
-    /* 初始化P1的的K值 */
-    if (!window.localStorage.getItem('oneK')) {
-      window.localStorage.setItem('oneK', '82.243')
-    }
-    /* 初始化P2的的K值 */
-    if (!window.localStorage.getItem('twoK')) {
-      window.localStorage.setItem('twoK', '82.243')
-    }
-    /* 初始化医院名称 */
-    if (!window.localStorage.getItem('hospital')) {
-      window.localStorage.setItem('hospital', '')
-    }
-
+    this.initLocalStorage()
     this.initSerialPort()
   },
   beforeDestroy() {
@@ -56,6 +44,32 @@ export default {
   },
 
   methods: {
+    /**
+     * @description: 软件启动后，初始化localStorage的一些值
+     */
+    initLocalStorage() {
+      /* 初始化P1的的K值 */
+      if (!window.localStorage.getItem('oneK')) {
+        window.localStorage.setItem('oneK', '82.243')
+      }
+      /* 初始化P2的的K值 */
+      if (!window.localStorage.getItem('twoK')) {
+        window.localStorage.setItem('twoK', '82.243')
+      }
+      /* 初始化医院名称 */
+      if (!window.localStorage.getItem('hospital')) {
+        window.localStorage.setItem('hospital', '')
+      }
+      /* 初始化免责声明的终端用户名称 */
+      if (!window.localStorage.getItem('disclaimer_name')) {
+        window.localStorage.setItem('disclaimer_name', '')
+      }
+      /* 初始化免责声明的设备编号 */
+      if (!window.localStorage.getItem('disclaimer_device_id')) {
+        window.localStorage.setItem('disclaimer_device_id', '')
+      }
+    },
+
     /**
      * @description: 初始化串口对象
      */
