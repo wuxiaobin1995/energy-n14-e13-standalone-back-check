@@ -110,7 +110,11 @@
       <!-- <el-button class="item" type="success" @click="handleTendencyPrint"
           >长期趋势报告</el-button
         > -->
-      <el-button class="item" type="info" @click="handleRefresh"
+      <el-button
+        class="item"
+        type="info"
+        icon="el-icon-refresh"
+        @click="handleRefresh"
         >刷 新</el-button
       >
     </div>

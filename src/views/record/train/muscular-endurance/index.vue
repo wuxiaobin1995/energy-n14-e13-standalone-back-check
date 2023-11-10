@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-12-19 09:52:09
- * @LastEditTime: 2022-12-23 15:31:23
+ * @LastEditTime: 2023-11-09 15:22:15
  * @Description : 肌耐力训练-数据记录
 -->
 <template>
@@ -110,7 +110,11 @@
       <!-- <el-button class="item" type="success" @click="handleTendencyPrint"
           >长期趋势报告</el-button
         > -->
-      <el-button class="item" type="info" @click="handleRefresh"
+      <el-button
+        class="item"
+        type="info"
+        icon="el-icon-refresh"
+        @click="handleRefresh"
         >刷 新</el-button
       >
     </div>

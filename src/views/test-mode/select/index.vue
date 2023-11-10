@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-16 11:38:38
- * @LastEditTime: 2023-06-18 10:06:06
+ * @LastEditTime: 2023-11-09 15:18:06
  * @Description : 测试项目选择
 -->
 <template>
@@ -97,11 +97,19 @@
         </div>
         <!-- 按钮组 -->
         <div class="btn">
-          <el-button class="item" type="primary" @click="handleTest"
-            >开始测试</el-button
+          <el-button
+            class="item"
+            type="primary"
+            icon="el-icon-position"
+            @click="handleTest"
+            >开始</el-button
           >
-          <el-button class="item" type="danger" @click="handleToHome"
-            >返回首页</el-button
+          <el-button
+            class="item"
+            type="danger"
+            icon="el-icon-arrow-left"
+            @click="handleToHome"
+            >返回</el-button
           >
         </div>
       </div>

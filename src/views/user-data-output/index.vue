@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2023-06-22 16:00:59
- * @LastEditTime: 2023-07-03 14:30:16
+ * @LastEditTime: 2023-11-09 15:12:42
  * @Description : 导出所选用户的数据（测试、训练、......）
 -->
 <template>
@@ -78,7 +78,11 @@
           @click="handleTrainOutput"
           >导出-训练</el-button
         >
-        <el-button class="item" type="info" @click="handleRefresh"
+        <el-button
+          class="item"
+          type="info"
+          icon="el-icon-refresh"
+          @click="handleRefresh"
           >刷 新</el-button
         >
       </div>

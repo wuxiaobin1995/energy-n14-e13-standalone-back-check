@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-06-24 09:29:49
- * @LastEditTime: 2023-06-22 16:02:19
+ * @LastEditTime: 2023-11-10 09:21:45
  * @Description : 用户
 -->
 <template>
@@ -157,10 +157,18 @@
           @click="handleAddUser"
           >添加用户</el-button
         >
-        <el-button class="item" type="primary" @click="handleDataOutput"
+        <el-button
+          class="item"
+          type="primary"
+          icon="el-icon-download"
+          @click="handleDataOutput"
           >导出数据</el-button
         >
-        <el-button class="item" type="info" @click="handleRefresh"
+        <el-button
+          class="item"
+          type="info"
+          icon="el-icon-refresh"
+          @click="handleRefresh"
           >刷 新</el-button
         >
       </div>

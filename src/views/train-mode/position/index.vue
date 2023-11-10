@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-12-19 17:56:27
- * @LastEditTime: 2022-12-21 09:57:22
+ * @LastEditTime: 2023-11-09 15:20:19
  * @Description : 训练-部位选择
 -->
 <template>
@@ -89,11 +89,19 @@
       </div>
 
       <div class="btn">
-        <el-button class="item" type="primary" @click="handleTrain"
+        <el-button
+          class="item"
+          type="primary"
+          icon="el-icon-position"
+          @click="handleTrain"
           >确 认</el-button
         >
-        <el-button class="item" type="danger" @click="handleToHome"
-          >返回首页</el-button
+        <el-button
+          class="item"
+          type="danger"
+          icon="el-icon-arrow-left"
+          @click="handleToHome"
+          >返回</el-button
         >
       </div>
     </div>
