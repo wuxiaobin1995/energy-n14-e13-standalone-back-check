@@ -1,12 +1,12 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-09-15 09:49:32
- * @LastEditTime: 2022-12-06 10:50:57
+ * @LastEditTime: 2024-04-10 14:27:06
  * @Description : vue.config.js
  */
 
 const projectName = 'energy-n14-e13-standalone-back-check' // 项目名称，是一个程序的唯一标识符
-const softwareName = '全身等长肌力测试训练系统-单机版' // 软件名称
+const softwareName = '全身等长肌力测试训练软件-单机版' // 软件名称
 
 const logo = './public/ico/logo/medical.ico' // 软件图标（医疗）
 // const logo = './public/ico/logo/power.ico' // 软件图标（运动）

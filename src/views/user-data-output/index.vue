@@ -221,7 +221,7 @@ export default {
                 header: tHeader, // 表头 必填
                 data: exportData, // 具体数据 必填
                 filename:
-                  '全身等长肌力测试训练系统-单机版-用户测试数据 ' +
+                  '全身等长肌力测试训练软件-单机版-用户测试数据 ' +
                   this.$moment().format('YYYY-MM-DD HH_mm_ss'), // 导出文件名，非必填
                 autoWidth: true, // 自适应列宽，非必填
                 bookType: 'xlsx' // 导出格式，非必填
@@ -323,7 +323,7 @@ export default {
                 header: tHeader, // 表头 必填
                 data: exportData, // 具体数据 必填
                 filename:
-                  '全身等长肌力测试训练系统-单机版-用户训练数据 ' +
+                  '全身等长肌力测试训练软件-单机版-用户训练数据 ' +
                   this.$moment().format('YYYY-MM-DD HH_mm_ss'), // 导出文件名，非必填
                 autoWidth: true, // 自适应列宽，非必填
                 bookType: 'xlsx' // 导出格式，非必填

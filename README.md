@@ -5,7 +5,7 @@
  * @Description : energy-n14-e13-standalone-back-check
 -->
 
-# 全身等长肌力测试训练系统-单机版
+# 全身等长肌力测试训练软件-单机版
 
 ## 基本设备信息
 
